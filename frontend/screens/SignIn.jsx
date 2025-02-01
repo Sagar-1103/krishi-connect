@@ -3,10 +3,19 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { getLanguage } from "../i18n.js";
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BACKEND_URL } from '@env';
+import { useLogin } from "../context/LoginProvider.jsx";
 
 const { width, height } = Dimensions.get("window");
 
 const SignInScreen = ({navigation}) => {
+  const [tempEmail,setTempEmail] = useState("");
+  const [tempPassword,setTempPassword] = useState("");
+  const {setUser,setRefreshToken,setAccessToken} = useLogin();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { t, i18n } = useTranslation();
 
@@ -18,32 +27,67 @@ const SignInScreen = ({navigation}) => {
     loadLanguage();
   }, []);
 
+  const handleLogin = async()=>{
+    if (!tempEmail || !tempPassword) {
+      Alert.alert('Error', 'All fields are required!');
+      return;
+    }
+    try {
+      const user = await auth().signInWithEmailAndPassword(tempEmail, tempPassword);
+      const {displayName, email} = user.user;
+      const url = `${BACKEND_URL}/users/login`;
+      const response = await axios.post(
+        url,
+        {email},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      const res = await response.data;
+      const data = res.data;
+
+      await AsyncStorage.setItem('user',JSON.stringify(data.user));
+      await AsyncStorage.setItem('refreshToken',data.refreshToken);
+      await AsyncStorage.setItem('accessToken',data.accessToken);
+
+      setUser(data.user);
+      setRefreshToken(data.refreshToken);
+      setAccessToken(data.accessToken);
+      setTempEmail("");
+      setTempPassword("");
+    } catch (error) {
+      console.log("Error : ",error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>{t('welcome')}</Text>
       
       <View style={styles.inputContainer}>
         <Ionicons name="person" size={width * 0.05} color="gray" style={styles.icon} />
-        <TextInput placeholder="Username or Email" style={styles.input} />
+        <TextInput value={tempEmail} autoCapitalize="none" onChangeText={setTempEmail} placeholderTextColor={"gray"} placeholder={t('username')} style={styles.input} />
       </View>
       
       <View style={styles.inputContainer}>
         <Ionicons name="lock-closed" size={width * 0.05} color="gray" style={styles.icon} />
-        <TextInput placeholder="Password" style={styles.input} secureTextEntry={!passwordVisible} />
+        <TextInput value={tempPassword} onChangeText={setTempPassword} placeholder={t('password')} placeholderTextColor={"gray"} style={styles.input} secureTextEntry={!passwordVisible} />
         <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
           <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={width * 0.05} color="gray" />
         </TouchableOpacity>
       </View>
       
       <Text style={styles.termsText}>
-        <Text style={styles.passLink}>Forgot Password ?</Text>
+        <Text style={styles.passLink}>{t('forgotPassword')}</Text>
       </Text>
       
-      <TouchableOpacity style={styles.createAccountButton}>
-        <Text style={styles.createAccountText}>Login</Text>
+      <TouchableOpacity onPress={handleLogin} style={styles.createAccountButton}>
+        <Text style={styles.createAccountText}>{t('login')}</Text>
       </TouchableOpacity>
       
-      <Text style={styles.orText}>- OR Continue with -</Text>
+      <Text style={styles.orText}>{t('or')}</Text>
       
       <View style={styles.socialButtonsContainer}>
         <TouchableOpacity style={styles.socialButton}>
@@ -58,7 +102,7 @@ const SignInScreen = ({navigation}) => {
       </View>
       
       <Text style={styles.loginText}>
-        Create An Account <TouchableOpacity onPress={()=>navigation.navigate("Signup")} ><Text style={styles.SignUpLink}>Sign Up</Text></TouchableOpacity> 
+        {t('createNewAccount')}<Text onPress={()=>navigation.navigate("Signup")} style={styles.SignUpLink}>{t('signup')}</Text>
       </Text>
     </View>
   );
@@ -93,7 +137,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 18
+    fontSize: 18,
+    color:"black"
   },
   termsText: {
     color: "gray",
@@ -132,6 +177,7 @@ const styles = StyleSheet.create({
   loginText: {
     textAlign: "center",
     marginTop: "5%",
+    color:"gray"
   },
   SignUpLink: {
     color: "green",

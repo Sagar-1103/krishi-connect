@@ -1,93 +1,73 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { Image } from 'react-native';
-import Logo from '../assets/Logo.png';
-import Profile from "../screens/Profile"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Profile from "../screens/Profile";
+
 const Tab = createBottomTabNavigator();
 
 const tabData = [
-    {
-        name: 'Home',
-        component: Profile,
-        icons: {
-            inactive: Logo,
-            active: Logo,
-        },
-    },
-    {
-        name: 'Logout',
-        component: Profile,
-        icons: {
-            inactive: Logo,
-            active: Logo,
-        },
-    },
-    
-    {
-        name: 'AI Chat',
-        component: Profile,
-        icons: {
-            inactive: Logo,
-            active: Logo,
-        },
-    },
-    {
-        name: 'Profile',
-        component: Profile,
-        icons: {
-            inactive: Logo,
-            active: Logo,
-        },
-    },
+  {
+    name: "Home",
+    component: Profile,
+    iconName: "home",
+  },
+  {
+    name: "Sell",
+    component: Profile,
+    iconName: "albums",
+  },
+  {
+    name: "AI Chat",
+    component: Profile,
+    iconName: "chatbubbles",
+  },
+  {
+    name: "Profile",
+    component: Profile,
+    iconName: "person",
+  },
 ];
 
 const TabNavigation = () => {
-    return (
-        <Tab.Navigator
-            screenOptions={{
-                headerShown: false,
-                tabBarStyle: {
-                    backgroundColor: '#fff', // Clean white background
-                    borderTopWidth: 0, // No border line
-                    height: 60, // Compact size
-                    borderTopLeftRadius: 10,
-                    borderTopRightRadius: 10
-                },
-                tabBarActiveTintColor: '#f3765f', // Active icon color
-                tabBarInactiveTintColor: '#6c757d', // Inactive icon color
-                tabBarLabelStyle: {
-                    fontSize: 10, // Smaller labels
-                    fontWeight: '500', // Lighter font weight for minimalism
-                    marginBottom: 7
-                },
-                tabBarIconStyle: {
-                    width: 24,
-                    height: 24,
-                    margin: 0,
-                },
-            }}
-        >
-            {tabData.map((tab, index) => (
-                <Tab.Screen
-                    key={index}
-                    name={tab.name}
-                    component={tab.component}
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <Image
-                                source={focused ? tab.icons.active : tab.icons.inactive}
-                                style={{
-                                    width: 24,
-                                    height: 24,
-                                    
-                                }}
-                            />
-                        ),
-                    }}
-                />
-            ))}
-        </Tab.Navigator>
-    );
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: "#fff",
+          borderTopWidth: 0,
+          height: 60,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          elevation: 5, // Subtle shadow
+        },
+        tabBarActiveTintColor: "green",
+        tabBarInactiveTintColor: "#6c757d",
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: "500",
+          marginBottom: 7,
+        },
+      }}
+    >
+      {tabData.map((tab, index) => (
+        <Tab.Screen
+          key={index}
+          name={tab.name}
+          component={tab.component}
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={tab.iconName}
+                size={focused ? 28 : 24} // Slight increase on active tab
+                color={color}
+              />
+            ),
+          }}
+        />
+      ))}
+    </Tab.Navigator>
+  );
 };
 
 export default TabNavigation;

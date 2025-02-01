@@ -1,3 +1,17 @@
 {
-    "welcome": "ಸ್ವಾಗತ,"
+    "chooseLang": "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ",
+    "continue": "ಮುಂದುವರಿಸಿ",
+    "welcome": "ಮರಳಿ ಸ್ವಾಗತ",
+    "username": "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವಾ ಇಮೇಲ್",
+    "password": "ಗುಪ್ತಪದ",
+    "forgotPassword": "ಪಾಸ್ವರ್ಡ್ ಮರೆತಿರಾ?",
+    "login": "ಲಾಗಿನ್",
+    "or": "---- ಅಥವಾ ಈ ಮೂಲಕ ಮುಂದುವರಿಯಿರಿ ----",
+    "createNewAccount": "ಹೊಸ ಖಾತೆ ತಯಾರಿಸಿ ",
+    "signup": "ಸೈನ್ ಅಪ್",
+    "confirmPassword": "ಗುಪ್ತಪದ ದೃಢೀಕರಿಸಿ",
+    "agreement": "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು ನಮ್ಮ",
+    "termsAndCondition": " ನಿಯಮಗಳು ಮತ್ತು ಶರತ್ತುಗಳಿಗೆ ಒಪ್ಪುತ್ತೀರಿ",
+    "createAccount": "ಖಾತೆ ರಚಿಸಿ",
+    "alreadyHaveAccount": "ನಾನು ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿದ್ದೇನೆ"
 }

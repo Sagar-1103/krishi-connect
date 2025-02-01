@@ -1,3 +1,17 @@
-{
-    "welcome": "स्वागत है,"
+{    
+    "continue": "जारी रखें",
+    "chooseLang": "भाषा चुनें",
+    "welcome": "वापसी पर स्वागत है",
+    "username": "उपयोगकर्ता नाम या ईमेल",
+    "password": "पासवर्ड",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "login": "लॉगिन",
+    "or": "---- या इसके साथ जारी रखें ----",
+    "createNewAccount": "एक खाता बनाएं ",
+    "signup": "साइन अप",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "agreement": "जारी रखने पर, आप हमारी सहमति देते हैं",
+    "termsAndCondition": " नियम और शर्तें",
+    "createAccount": "खाता बनाएं",
+    "alreadyHaveAccount": "मेरे पास पहले से एक खाता है"
 }

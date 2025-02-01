@@ -4,27 +4,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useLogin } from '../context/LoginProvider';
 import { useNavigation } from '@react-navigation/native';
+import { BACKEND_URL } from '@env';
+import axios from 'axios';
 
 
 const { width } = Dimensions.get('window');
 
 const SellScreen = () => {
-    const [listings, setListings] = useState([
-        // {
-        //     id: 1,
-        //     title: 'Harvester / Thrasher',
-        //     date: '19 March 2024',
-        //     price: 2500,
-        //     image: 'https://picsum.photos/500',
-        // },
-        // {
-        //     id: 2,
-        //     title: 'Tractor Plough Only',
-        //     date: '25 March 2024',
-        //     price: 600,
-        //     image: 'https://picsum.photos/500',
-        // },
-    ]);
+    const {setUploadingImage,user} = useLogin();
+    const [listings, setListings] = useState([]);
 
     const navigation = useNavigation();
 
@@ -71,9 +59,13 @@ const SellScreen = () => {
         cropperToolbarTitle:"Crop Eye Image",
     })
         .then(image => {
-            // setImageUri(image.path);
+            setUploadingImage({
+                uri: image.path,
+                name: image.filename || `profile_${Date.now()}.jpg`, 
+                type: image.mime || "image/jpeg",
+              });
             console.log(image.size);
-            navigation.navigate("Profile");
+            navigation.navigate("ProductDetailsScreen");
         })
         .catch(error => {
         console.log(error);
@@ -82,6 +74,14 @@ const SellScreen = () => {
 
     const fetchListings = async () => {
         try {
+            const url = `https://krishi-connect-product-service-nine.vercel.app/products/${user._id}`;
+            const response = await axios.get(url);
+            const data = await response.data;
+            const res = data.data;
+            
+            setListings(res);
+            
+            
             
         } catch (error) {
             console.log('Error fetching listings:', error);
@@ -89,11 +89,11 @@ const SellScreen = () => {
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.listingCard}>
-            <Image source={{ uri: item.image }} style={styles.listingImage} />
+        <TouchableOpacity onPress={()=>navigation.navigate("ListedItemScreen", { item })} style={styles.listingCard}>
+            <Image source={{ uri: item.image.imageUrl }} style={styles.listingImage} />
             <View style={styles.listingDetails}>
                 <Text style={styles.listingTitle}>{item.title}</Text>
-                <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} /> {item.date}</Text>
+                <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} /> {item.from}</Text>
                 <Text style={styles.listingPrice}>₹{item.price} / day</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color="black" style={styles.chevron} />
@@ -122,8 +122,8 @@ const SellScreen = () => {
             ) : (
                 <FlatList 
                     data={listings} 
-                    keyExtractor={(item) => item.id.toString()} 
-                    renderItem={renderItem} 
+                    keyExtractor={(product) => product._id} 
+                    renderItem={renderItem}
                 />
             )}
         </View>

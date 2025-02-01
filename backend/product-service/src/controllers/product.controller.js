@@ -5,30 +5,24 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Product } from "../models/product.model.js";
 
 const postProduct = AsyncHandler(async(req,res)=>{
-    const {title,category,subCategory,description,price,address,status,serviceType,dates,authorId,paymentType} = req.body;
-    if(!title || !category || !subCategory || !description || !price || !address || !status || !serviceType || !dates ||!authorId || !paymentType){
+    const {title,category,subCategory,description,pricingUnit,price,area,village,state,lat,lon,status,from,to,authorId,paymentType} = req.body;
+    if(!title || !category || !subCategory || !description || !pricingUnit || !price || !area || !village || !state || !from || !to ||  !lat || !lon || !status ||!authorId || !paymentType){
         throw new ApiError(400,"Please provide all the details.");
     }
-    let files = await req.files;
-    files = files.images;
+    const imageLocalPath = await req?.file?.path;
+    console.log(imageLocalPath);
     
-    if (!files || files.length === 0) {
-        throw new ApiError(400, "Please upload at least one image.");
+    if(!imageLocalPath){
+        throw new ApiError(400,"Please upload the image.");
     }
-
-    const uploadedImages = await Promise.all(
-        files.map(async (file) => {
-            const uploadedImage = await uploadOnCloudinary(file.path);
-            
-            if (!uploadedImage) {
-                throw new ApiError(500, "Error uploading image to Cloudinary");
-            }
-            return { imageUrl: uploadedImage.secure_url, imageId: uploadedImage.public_id };
-        })
-    );
+    
+    const uploadedImagee = await uploadOnCloudinary(imageLocalPath);
+    if(!uploadedImagee){
+        throw new ApiError(500,"Some error occured while uploading image to server");
+    }
     
     const createdProduct = await Product.create({
-        title,category,subCategory,images:uploadedImages,description,price,address,status,serviceType,dates,authorId,paymentType
+        title,category,subCategory,image:{imageUrl:uploadedImagee?.url,imageId:uploadedImagee?.public_id,},description,price,pricingUnit,area,village,state,status,from,to,authorId,paymentType,lat,lon
     })
     if (!createdProduct) {
         throw new ApiError(500, "Something went wrong while posting the product");

@@ -21,6 +21,8 @@ const AIChat = ({ navigation }) => {
         try {
             setLoading(true);
             const url = `${BACKEND_URL}/ai-chat/farmer/${user?._id}`;
+            console.log(url);
+            
             const res = await axios.get(url, {
                 headers: { 'Content-Type': 'application/json' },
             });

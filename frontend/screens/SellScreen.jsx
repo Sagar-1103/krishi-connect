@@ -81,7 +81,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#f9f9f9',
         padding: '5%',
     },
     header: {
@@ -116,6 +116,11 @@ const styles = StyleSheet.create({
         padding: '5%',
         alignItems: 'center',
         marginTop: '5%',
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+        elevation: 4,
     },
     newListingText: {
         fontSize: 18,
@@ -132,6 +137,8 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOpacity: 0.5,
         shadowOffset: { width: 2, height: 4 },
+        shadowRadius: 6,
+        elevation: 3,
     },
     listingImage: {
         width: width * 0.2,

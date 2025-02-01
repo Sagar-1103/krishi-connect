@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AppNavigation from "./AppNavigtion/AppNavigation"
 import LoginProvider from './context/LoginProvider';
 import HomeScreen from './screens/SellScreen';
+import ChatScreen from './screens/ChatScreen';
 
 const App = () => {
 

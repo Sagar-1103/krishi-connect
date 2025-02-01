@@ -11,20 +11,11 @@ import OnboardingScreen1 from './screens/OnboardingScreen1';
 const App = () => {
 
   return (
-<<<<<<< HEAD
-    // <NavigationContainer>
-    //   <LoginProvider>
-    //     <AppNavigation/>
-    //   </LoginProvider>
-    // </NavigationContainer>
-    <OnboardingScreen1/>
-=======
     <NavigationContainer>
       <LoginProvider>
         <AppNavigation/>
       </LoginProvider>
     </NavigationContainer>
->>>>>>> 941906d63db1e3e5cfe8456625d7e35e1b95d66b
   );
 };
 

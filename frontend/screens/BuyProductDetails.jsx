@@ -8,7 +8,7 @@ const BuyProductDetails = ({ route }) => {
     const navigation = useNavigation();
 
     const handleChatRedirect = async()=>{
-        navigation.navigate("ChatScreen");
+        navigation.navigate("ChatScreen",{product});
     }
     
   return (

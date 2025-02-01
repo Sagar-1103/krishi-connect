@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-import { WebSocketServer } from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import { AsyncHandler } from "./utils/AsyncHandler.js";
 import cors from 'cors';
 import url from 'url';

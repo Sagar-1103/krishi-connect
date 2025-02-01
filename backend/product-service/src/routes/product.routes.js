@@ -5,7 +5,7 @@ import { getServiceHistory, postProduct } from "../controllers/product.controlle
 const router = Router();
 
 
-router.route("/post").post(upload.fields([{ name: 'images', maxCount: 3 }]),postProduct);
+router.route("/post").post(upload.single("image"),postProduct);
 router.route("/:userId").get(getServiceHistory);
 
 export default router;

@@ -9,6 +9,7 @@ import TabNavigation from './TabNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import { GOOGLE_CLIENT_ID } from '@env';
+import ProductDetailsScreen from '../screens/SellProductDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,7 +50,10 @@ const AppNavigation = () => {
   }
 
   return (
-    <TabNavigation/>
+    <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="TabNavigation" >
+      <Stack.Screen name="TabNavigation" component={TabNavigation} />
+      <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
+    </Stack.Navigator>
   );
 
     

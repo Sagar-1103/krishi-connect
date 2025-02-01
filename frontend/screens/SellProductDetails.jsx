@@ -1,23 +1,91 @@
-import React, { useState, useEffect } from "react";
-import { View, Image, Text, TextInput, TouchableOpacity, ScrollView, Modal } from "react-native";
-import Ionicons from 'react-native-vector-icons/Ionicons'; // Updated import for icons
-import { SelectList } from 'react-native-dropdown-select-list'; // Import dropdown list
+import React, { useState, useEffect ,useRef} from "react";
+import { View, Image, Text, TextInput, TouchableOpacity, ScrollView, Modal, Animated ,Easing, Alert } from "react-native";
+import Ionicons from 'react-native-vector-icons/Ionicons'; 
+import { SelectList } from 'react-native-dropdown-select-list'; 
 import { Calendar } from "react-native-calendars";
+import { useLogin } from "../context/LoginProvider";
+import LottieView from 'lottie-react-native';
+import Tick from "../assets/tick-animation.json";
+import axios from "axios";
+import { BACKEND_URL } from '@env';
+
+const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 
-const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a prop
+const ProductDetailsScreen = ({ navigation }) => {
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [pricingUnit, setPricingUnit] = useState("");
   const [state, setState] = useState("");
+  const [paymentType, setPaymentType] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [area, setArea] = useState("");
   const [village, setVillage] = useState("");
   const [availableSubCategories, setAvailableSubCategories] = useState("")
+  const {uploadingImage,user} = useLogin();
+  const [modalVisible, setModalVisible] = useState(false);
+  const handleDetailSubmit = async()=>{
+    console.log(subCategory);
 
-  // Define categories and their respective subcategories
+    if (!title || !uploadingImage || !category || !subCategory || !description || !pricingUnit || !price || !startDate || !endDate || !area || !village || !state) {
+        Alert.alert('Error', 'All fields are required!');
+        
+      return;
+    }
+    try {
+      const formData = new FormData();
+
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('subCategory', subCategory);
+    formData.append('description', description);
+    formData.append('pricingUnit', pricingUnit);
+    formData.append('price', price);
+    formData.append('area', area);
+    formData.append('village', village);
+    formData.append('state', state);
+    formData.append('lon', 15);
+    formData.append('lat', 75);
+    formData.append('status', "listed");
+    formData.append('from', startDate);
+    formData.append('to', endDate);
+
+    formData.append('authorId', user._id);
+    formData.append('paymentType', paymentType);
+    formData.append('image',uploadingImage);
+
+      const url = `${BACKEND_URL}/p/products/post`;
+      const response = await axios.post(
+        url,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Accept": "application/json"
+          },
+        },
+      );
+      const res = await response.data;
+      const data = res.data;
+      console.log(data);
+      setModalVisible(true);
+      Animated.timing(animationProgress.current, {
+        toValue: 1,
+        duration: 5000,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }).start();
+      setTimeout(() => {
+        setModalVisible(false);
+        navigation.navigate("Home");
+      }, 5000);
+    } catch (error) {
+      console.log("Error : ",error);
+    }
+  }
+
   const categories = [
     { key: '1', value: 'Machines' },
     { key: '2', value: 'Tools and Hand Equipment' },
@@ -133,25 +201,29 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
     { key: '36', value: 'Jammu and Kashmir' }
   ];
 
+  const paymentTypes = [
+    {value: 'Cash Only' },
+    {value: 'Online Only' },
+    {value: 'Both' },
+  ];
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isSelectingStartDate, setIsSelectingStartDate] = useState(true);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  
 
   // Function to handle date selection
   const handleDateSelect = (date) => {
     if (isSelectingStartDate) {
       setStartDate(date.dateString);
       setIsSelectingStartDate(false);
-      // If end date exists and is before new start date, clear it
       if (endDate && date.dateString > endDate) {
         setEndDate("");
       }
     } else {
-      // Ensure end date isn't before start date
       if (date.dateString >= startDate) {
         setEndDate(date.dateString);
-        setIsCalendarVisible(false);
         setIsSelectingStartDate(true); // Reset for next time calendar opens
       }
     }
@@ -206,8 +278,22 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
     }
   }, [category]);
 
+  const animationProgress = useRef(new Animated.Value(0));
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#fff", padding: 16 }}>
+    <>
+    <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <AnimatedLottieView style={{height:200,width:200}} source={Tick} progress={animationProgress.current}/>
+          </View>
+        </View>
+      </Modal>
+    <ScrollView style={{ flex: 1, backgroundColor: "#fff", paddingHorizontal: 16}}>
 
       <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 10 }}>
         <Ionicons name="arrow-back" size={24} color="black" />
@@ -218,7 +304,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
       </Text>
 
       <Image 
-        source={{ uri: 'https://picsum.photos/500' }}
+        source={{ uri: uploadingImage.uri }}
         style={{ height: 150, width: '100%', borderRadius: 10, marginBottom: 10 }} 
       />
 
@@ -303,13 +389,12 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholderTextColor={'black'}
       />
 
-      <TouchableOpacity style={styles.button} onPress={() => setIsCalendarVisible(true)}>
+      {pricingUnit!=="Full Product" && <TouchableOpacity style={styles.button} onPress={() => setIsCalendarVisible(true)}>
         <Text style={styles.buttonText}>Choose from Calendar</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>}
 
-      {/* Display selected date range */}
       {startDate && (
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginVertical: 16 }}>
           <Text style={{ color: "black" }}>
             Start Date: {startDate}
           </Text>
@@ -320,7 +405,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
           )}
         </View>
       )}
-
+  
       {/* Calendar Modal */}
       <Modal
         transparent={true}
@@ -396,10 +481,26 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholderTextColor={'black'}
       />
 
-      <TouchableOpacity style={styles.listButton}>
+      <Text style={{ color: "black" }}>Payment Type</Text>
+      <SelectList
+        setSelected={setPaymentType}
+        data={paymentTypes}
+        save="value"
+        placeholder="Select payment type"
+        boxStyles={styles.dropdown}
+        dropdownStyles={styles.dropdownList}
+        color="black"
+        inputStyles={styles.optionInput}
+        dropdownItemStyles={styles.item} 
+        dropdownTextStyles={styles.itemText} 
+        placeholderTextColor={'black'}
+      />
+
+      <TouchableOpacity onPress={handleDetailSubmit} style={styles.listButton}>
         <Text style={styles.listButtonText}>List my Product</Text>
       </TouchableOpacity>
     </ScrollView>
+    </>
   );
 };
 
@@ -440,6 +541,7 @@ const styles = {
     borderRadius: 5,
     alignItems: "center",
     marginTop: 10,
+    marginBottom:20,
     color: "black",
   },
   buttonText: {
@@ -495,6 +597,51 @@ const styles = {
   closeButtonText: {
     color: "#fff",
     fontSize: 16,
+  },
+  modalView: {
+    backgroundColor: '#ffffff',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    elevation: 5,
+  },
+  modalTitle: {
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '900',
+  },
+  modalDescription: {
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'black',
+    fontSize: 16,
+    fontWeight: '500',
+    width: 250,
+  },
+  buttonGroup : {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+  },
+  closeButton: {
+    marginTop: 10,
+    backgroundColor: 'rgb(233,108,56)',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginHorizontal:20
+  },
+  closeButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 };
 

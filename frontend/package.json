@@ -22,6 +22,7 @@
     "@rnmapbox/maps": "^10.1.33",
     "axios": "^1.7.9",
     "i18next": "^24.2.2",
+    "lottie-react-native": "^7.2.2",
     "react": "18.2.0",
     "react-i18next": "^15.4.0",
     "react-native": "0.73.6",

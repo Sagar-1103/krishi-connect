@@ -18,6 +18,10 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
+    pricingUnit:{
+      type: String,
+      required: true,
+    },
     price: {
       type: String,
       required: true,
@@ -34,19 +38,16 @@ const productSchema = new Schema(
     //   userId: { type: Schema.Types.ObjectId, ref: "User" },
     //   score: { type: Number, min: 1, max: 5 },
     // }],
-    images: [
-      {
-        imageUrl: {
-          type: String,
-          required: true,
-        },
-        imageId: {
-          type: String,
-        },
+    image:{
+      imageUrl: {
+        type: String,
+        required: true,
       },
-    ],
-    address: {
-      pinCode: {
+      imageId: {
+        type: String,
+      },
+    },  
+      village: {
         type: String,
         required: true,
       },
@@ -54,7 +55,10 @@ const productSchema = new Schema(
         type: String,
         required: true,
       },
-      coordinates: {
+      state: {
+        type: String,
+        required: true,
+      },
         lat: {
           type: Number,
           required: true,
@@ -63,26 +67,18 @@ const productSchema = new Schema(
           type: Number,
           required: true,
         },
-      },
-    },
     status: {
       type: String,
       required: true,
     },
-    serviceType: {
-      type: String,
-      required: true,
-    },
-    dates: {
       from: {
-        type: Date,
+        type: String,
         required:true,
       },
       to: {
-        type: Date,
+        type: String,
         required:true,
       },
-    },
   },
   {
     timestamps: true,

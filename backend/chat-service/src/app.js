@@ -18,7 +18,7 @@ const users = new Map();
 wss.on('connection', function connection(ws, req) {
     console.log("websocket connection")
     const { query } = url.parse(req.url, true);
-    const { userId, friendId } = query;
+    const { userId, friendId, productId } = query;
 
     if (!userId) {
         console.log("Invalid connection: Missing userId");
@@ -34,20 +34,20 @@ wss.on('connection', function connection(ws, req) {
     ws.on('message', async function incoming(data) {
         try {
             const messageData = JSON.parse(data);
-            const { recipientId, text } = messageData;
+            const { recipientId, text, productId } = messageData;
 
             if (!recipientId) {
                 console.error("Invalid message: Missing recipientId");
                 return;
             }
 
-            console.log(`Message from ${userId} to ${recipientId}: ${text}`);
+            console.log(`Message from ${userId} to ${recipientId}: ${text} for product ${productId}`);
 
-            await storeMessage(userId, recipientId, text);
+            await storeMessage(userId, recipientId, text, productId);
 
             const recipientSocket = users.get(recipientId);
             if (recipientSocket && recipientSocket.readyState === WebSocket.OPEN) {
-                recipientSocket.send(JSON.stringify({ sender: userId,receiver: recipientId, message: text,timestamp: new Date() }));
+                recipientSocket.send(JSON.stringify({ sender: userId, receiver: recipientId, message: text, timestamp: new Date() }));
             } else {
                 console.log(`User ${recipientId} is not online.`);
             }
@@ -63,11 +63,12 @@ wss.on('connection', function connection(ws, req) {
 });
 
 // Function to store chat messages
-async function storeMessage(userId, friendId, text) {
+async function storeMessage(userId, friendId, text, productId) {
     try {
         const newChat = new Chat({
             sender: userId,
             receiver: friendId,
+            productId: productId,
             message: text,
         });
 
@@ -96,4 +97,4 @@ server.listen(port, function () {
     console.log(`Server is running on PORT ${port}!`);
 });
 
-export {app}
+export { app }

@@ -1,38 +1,86 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ImagePicker from 'react-native-image-crop-picker';
+import { useLogin } from '../context/LoginProvider';
+
 
 const { width } = Dimensions.get('window');
 
-const HomeScreen = () => {
-    const [listings, setListings] = useState([    //dummy data
-        {
-            id: 1,
-            title: 'Harvester / Thrasher',
-            date: '19 March 2024',
-            price: 2500,
-            image: 'https://picsum.photos/500',
-        },
-        {
-            id: 2,
-            title: 'Tractor Plough Only',
-            date: '25 March 2024',
-            price: 600,
-            image: 'https://picsum.photos/500',
-        },
+const SellScreen = () => {
+    const [listings, setListings] = useState([
+        // {
+        //     id: 1,
+        //     title: 'Harvester / Thrasher',
+        //     date: '19 March 2024',
+        //     price: 2500,
+        //     image: 'https://picsum.photos/500',
+        // },
+        // {
+        //     id: 2,
+        //     title: 'Tractor Plough Only',
+        //     date: '25 March 2024',
+        //     price: 600,
+        //     image: 'https://picsum.photos/500',
+        // },
     ]);
 
     useEffect(() => {
+        perm();
         fetchListings();
     }, []);
+    
+    const perm = async () => {
+        await requestCameraPermission();
+      };
+    const requestCameraPermission = async () => {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: 'App Camera Permission',
+              message:
+                'This App needs access to your camera ' +
+                'so you can take pictures.',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('You can use the camera');
+          } else {
+            console.log('Camera permission denied');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      };
+
+    const upload = async() => {
+    ImagePicker.openCamera({
+        width: 1024,
+        height: 1024,
+        cropperCircleOverlay: true,
+        compressImageQuality: 1, 
+        compressImageMaxWidth: 1024,
+        compressImageMaxHeight: 1024,
+        cropperToolbarTitle:"Crop Eye Image",
+    })
+        .then(image => {
+            // setImageUri(image.path);
+            console.log(image.size);
+        })
+        .catch(error => {
+        console.log(error);
+        });
+    };
 
     const fetchListings = async () => {
         try {
-            const response = await fetch('');
-            const data = await response.json();
-            setListings(data);
+            
         } catch (error) {
-            console.error('Error fetching listings:', error);
+            console.log('Error fetching listings:', error);
         }
     };
 
@@ -57,7 +105,7 @@ const HomeScreen = () => {
             
             <Text style={styles.headTitle}>Rent or Sell</Text>
 
-            <TouchableOpacity style={styles.newListingButton}>
+            <TouchableOpacity onPress={upload} style={styles.newListingButton}>
                 <Ionicons name="add" size={40} color="green" />
                 <Text style={styles.newListingText}>New Listing</Text>
             </TouchableOpacity>
@@ -173,4 +221,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default SellScreen;

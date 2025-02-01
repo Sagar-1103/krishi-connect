@@ -10,12 +10,12 @@ import ChatScreen from './screens/ChatScreen';
 const App = () => {
 
   return (
-    <NavigationContainer>
-      <LoginProvider>
-        <AppNavigation/>
-      </LoginProvider>
-    </NavigationContainer>
-    // <HomeScreen/>
+    // <NavigationContainer>
+    //   <LoginProvider>
+    //     <AppNavigation/>
+    //   </LoginProvider>
+    // </NavigationContainer>
+    <ChatScreen/>
   );
 };
 

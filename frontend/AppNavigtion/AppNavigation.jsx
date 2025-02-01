@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
   const {user,setAccessToken,setUser,setRefreshToken} = useLogin();
 
-  if(!user){
+  if(user){
     return (
     <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="LanguageSelector" >
       <Stack.Screen name="LanguageSelector" component={LanguageSelector} />

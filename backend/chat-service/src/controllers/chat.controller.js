@@ -12,9 +12,9 @@ const chat = AsyncHandler(async (req, res) => {
     // );
     // await newChat.save();
 
-  console.log("I reached server")
+  console.log("Reached Server")
   const { userId, friendId } = req.query; 
-  console.log(userId,friendId)
+//   console.log(userId,friendId)
   try {
     const messages = await Chat.find({
       $or: [
@@ -22,7 +22,7 @@ const chat = AsyncHandler(async (req, res) => {
         { sender: friendId, receiver: userId }
       ]
     });
-    console.log('Messages between users:', messages);
+    // console.log('Messages between users:', messages);
     return res.status(200).json({
       message: 'Chat fetched',
       messages,

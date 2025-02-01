@@ -56,7 +56,7 @@ const ProductDetailsScreen = ({ navigation }) => {
     formData.append('paymentType', paymentType);
     formData.append('image',uploadingImage);
 
-      const url = `${BACKEND_URL}/p/products/post`;
+      const url = `https://krishi-connect-product-service-nine.vercel.app/products/post`;
       const response = await axios.post(
         url,
         formData,

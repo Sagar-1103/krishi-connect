@@ -1,12 +1,17 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
-const BuyProductDetails = () => {
+const BuyProductDetails = ({ route }) => {
+    const { product } = route.params;
+    const navigation = useNavigation();
+    console.log(product);
+    
   return (
     <View style={styles.container}>
     <View style={styles.header}>
-        <TouchableOpacity><Ionicons name="arrow-back" size={24} color="black" /></TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.goBack()}><Ionicons name="arrow-back" size={24} color="black" /></TouchableOpacity>
         <Image source={require('../assets/krishiConnectLogo.png')} style={styles.logo} />
         <TouchableOpacity><Ionicons name="settings-outline" size={16} color="rgba(0,0,0,0)" /></TouchableOpacity>
     </View>
@@ -16,8 +21,8 @@ const BuyProductDetails = () => {
         shadowOffset: { width: 2, height: 2 },
         shadowRadius: 16,
         elevation: 6, }}>
-        <Image source={{uri:'https://picsum.photos/1100'}} style={styles.mainImage}></Image>
-        <Text style={styles.title}>Title of Product</Text>
+        <Image source={{uri:product.image}} style={styles.mainImage}></Image>
+        <Text style={styles.title}>{product.title}</Text>
         <Text style={styles.category}>Category</Text>
         <Text style={styles.subCategory}>Sub Category</Text>
         <Text style={styles.price}>Price/type</Text>
@@ -116,4 +121,4 @@ const styles = StyleSheet.create({
       },
 })
 
-export default BuyProductDetails;
+export default BuyProductDetails

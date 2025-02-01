@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { View, ScrollView, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
 
@@ -37,6 +38,8 @@ const categories = ["All Items", "Machines", "Tools", "Irrigation", "Fertilizers
 const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Items");
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -46,7 +49,7 @@ const HomeScreen = () => {
       {/* Scrollable Content */}
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: 60, paddingBottom: 20 }} >
         <View style={styles.searchContainer}>
-          <TextInput placeholder="Search any product..." style={styles.searchInput} />
+          <TextInput placeholderTextColor={"gray"} placeholder="Search any product..." style={styles.searchInput} />
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterContainer}>
@@ -68,10 +71,12 @@ const HomeScreen = () => {
         <View>
           {products.map((product) => (
             <View key={product.id} style={styles.productCard}>
-              <Image source={{ uri: product.image }} style={styles.productImage} />
+              <TouchableOpacity onPress={() => navigation.navigate("BuyProductDetails", { product })}>
+              <Image  source={{ uri: product.image }} style={styles.productImage} />
               <Text style={styles.productName}>{product.name}</Text>
               <Text style={styles.productDesc}>{product.description}</Text>
               <Text style={styles.productPrice}>{product.price}</Text>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
@@ -140,6 +145,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 20,
+    color:"black"
   },
   productCard: {
     backgroundColor: "#fff",
@@ -161,6 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 10,
+    color:"black"
   },
   productDesc: {
     fontSize: 14,

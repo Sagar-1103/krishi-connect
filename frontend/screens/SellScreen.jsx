@@ -13,22 +13,7 @@ const { width } = Dimensions.get('window');
 
 const SellScreen = () => {
     const {setUploadingImage,user} = useLogin();
-    const [listings, setListings] = useState([
-        {
-            id: 1,
-            title: 'Harvester / Thrasher',
-            date: '19 March 2024',
-            price: 2500,
-            image: 'https://picsum.photos/500',
-        },
-        {
-            id: 2,
-            title: 'Tractor Plough Only',
-            date: '25 March 2024',
-            price: 600,
-            image: 'https://picsum.photos/500',
-        },
-    ]);
+    const [listings, setListings] = useState([]);
 
     const navigation = useNavigation();
 
@@ -90,7 +75,7 @@ const SellScreen = () => {
 
     const fetchListings = async () => {
         try {
-            const url = `${BACKEND_URL}/p/products/${user._id}`;
+            const url = `https://krishi-connect-product-service-nine.vercel.app/products/${user._id}`;
             const response = await axios.get(url);
             const data = await response.data;
             const res = data.data;

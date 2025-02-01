@@ -162,6 +162,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
   },
+  messageContainer : {
+    height: "87%",
+  },
   sentBubble: {
     alignSelf: "flex-end",
     backgroundColor: "green",

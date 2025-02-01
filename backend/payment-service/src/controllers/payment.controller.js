@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { AsyncHandler } from "../utils/AsyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
+import { Payment } from "../models/payment.model.js";
 dotenv.config();
 
 const razorpay = new Razorpay({
@@ -12,7 +13,7 @@ const razorpay = new Razorpay({
 });
 
 const creatingOrder = AsyncHandler(async (req, res) => {
-  const { amount } = req.body;
+  const { amount,buyerId } = req.body;
 
   if (!amount || amount < 1) {
     throw new ApiError(400, "Invalid amount. Please enter a valid value.");
@@ -27,6 +28,12 @@ const creatingOrder = AsyncHandler(async (req, res) => {
   const order = await razorpay.orders.create(options);
   if (!order) {
     throw new ApiError(500, "Something went wrong while creating the order.");
+  }
+
+  const createdOrder = await Payment.create({buyerId});
+  if(!createdOrder){
+    throw new ApiError(500, "Something went wrong while creating the order.");
+
   }
   return res.status(201).json(new ApiResponse(201, order, "Order created successfully"));
 });

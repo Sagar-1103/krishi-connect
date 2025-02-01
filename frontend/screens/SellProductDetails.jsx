@@ -8,6 +8,7 @@ import LottieView from 'lottie-react-native';
 import Tick from "../assets/tick-animation.json";
 import axios from "axios";
 import { BACKEND_URL } from '@env';
+import { useNavigation } from "@react-navigation/native";
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 

@@ -1,47 +1,80 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
+import Geolocation from '@react-native-community/geolocation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const products = [
+const categories = ["All Items", "Machines", "Tools", "Irrigation", "Fertilizers", "Pesticides", "Livestock", "Storage", "Safety"];
+const demoProducts = [
   {
     id: 1,
-    name: "Tractor without plough",
+    title: "Tractor without plough",
     description: "IMT 549.3 DL Diesel Tractor - Use it for ploughing or carrying goods",
     price: "₹2500 / day",
-    image: "https://picsum.photos/600",
+    image: {imageUrl : "https://picsum.photos/600"}
+
   },
   {
     id: 2,
-    name: "Pesticide and Sprayer",
+    title: "Pesticide and Sprayer",
     description: "30L Pesticide with sprayer - Double pump, battery sprayer",
     price: "₹1800",
-    image: "https://picsum.photos/700",
+    image: {imageUrl : "https://picsum.photos/700"}
+
   },
   {
     id: 3,
-    name: "Tractor plough (only)",
+    title: "Tractor plough (only)",
     description: "Plough without tractor - Suitable for all medium and large tractors",
     price: "₹600 / day",
-    image: "https://picsum.photos/800",
+    image: {imageUrl : "https://picsum.photos/800"}
+
   },
   {
     id: 4,
-    name: "Harvester/Thrasher",
+    title: "Harvester/Thrasher",
     description: "John Deere Harvester - Most suitable for wheat",
     price: "₹3200 / day",
-    image: "https://picsum.photos/900",
+    image: {imageUrl : "https://picsum.photos/900"}
+      
   },
 ];
 
-const categories = ["All Items", "Machines", "Tools", "Irrigation", "Fertilizers", "Pesticides", "Livestock", "Storage", "Safety"];
 
 const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Items");
+  const [products,setProducts] = useState([]);
 
   const navigation = useNavigation();
 
+  useEffect(()=>{
+    fetchItems();
+  Geolocation.getCurrentPosition(info => console.log(info));
+    // setProducts(demoProducts);
+  },[])
+
+  const fetchItems = async()=>{
+    try {
+      const url = `https://krishi-connect-product-service-nine.vercel.app/products`;
+      const reponse = await axios.get(url);
+      const res = await reponse.data;
+      setProducts(res.data);
+
+    } catch (error) {
+      console.log("Error : ",error);
+    }
+  }
+
+  const handleChatRedirect = async()=>{
+    
+  }
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={handleChatRedirect} style={styles.chatBtn}>
+                  <Ionicons name="chatbubble" size={24} style={{marginVertical: 12}} color="#fff" />
+          </TouchableOpacity>
       <View style={styles.logoContainer}>
         <Image source={require("../assets/krishiConnectLogo.png")} style={styles.logo} />
       </View>
@@ -68,18 +101,29 @@ const HomeScreen = () => {
 
         <Text style={styles.heading}>All Featured</Text>
 
-        <View>
-          {products.map((product) => (
-            <View key={product.id} style={styles.productCard}>
+        {selectedCategory==="All Items" && <View>
+          {products.map((product,index) => (
+            <View key={index} style={styles.productCard}>
               <TouchableOpacity onPress={() => navigation.navigate("BuyProductDetails", { product })}>
-              <Image  source={{ uri: product.image }} style={styles.productImage} />
-              <Text style={styles.productName}>{product.name}</Text>
+              <Image  source={{ uri: product.image.imageUrl }} style={styles.productImage} />
+              <Text style={styles.productName}>{product.title}</Text>
               <Text style={styles.productDesc}>{product.description}</Text>
-              <Text style={styles.productPrice}>{product.price}</Text>
+              <Text style={styles.productPrice}>{product.price}{" / "}{product.pricingUnit.split(" ")[1]}</Text>
               </TouchableOpacity>
             </View>
           ))}
-        </View>
+        </View>}
+        {
+          products.filter((p)=>p.category===selectedCategory).map((product,index) => (
+            <View key={index} style={styles.productCard}>
+              <TouchableOpacity onPress={() => navigation.navigate("BuyProductDetails", { product })}>
+              <Image  source={{ uri: product.image.imageUrl }} style={styles.productImage} />
+              <Text style={styles.productName}>{product.title}</Text>
+              <Text style={styles.productDesc}>{product.description}</Text>
+              <Text style={styles.productPrice}>{product.price}{" / "}{product.pricingUnit.split(" ")[1]}</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
       </ScrollView>
     </View>
   );
@@ -90,6 +134,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f8f8f8",
     paddingHorizontal: 16,
+  },
+  chatBtn: {
+    position: "absolute",
+    top: 10,
+    right:10,
+    backgroundColor: "green",
+    width: 50,
+    height: 50,
+    borderRadius: 32,
+    alignItems: "center",
+    zIndex: 999,
   },
   logoContainer: {
     position: "absolute",

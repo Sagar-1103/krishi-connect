@@ -1,23 +1,14 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { useLogin } from '../context/LoginProvider';
 
-const BuyProductDetails = ({ route }) => {
-    const { product } = route.params;
+const ListedItemScreen = ({ route }) => {
+    const { item } = route.params;
+    console.log(item);
+    
     const navigation = useNavigation();
 
-    const {setTempProduct} = useLogin();
-
-    useEffect(()=>{
-        setTempProduct(product)
-    },[])
-    
-
-    const handleChatRedirect = async()=>{
-        navigation.navigate("ChatScreen",{product});
-    }
     
   return (
     <View style={styles.container}>
@@ -32,24 +23,18 @@ const BuyProductDetails = ({ route }) => {
         shadowOffset: { width: 2, height: 2 },
         shadowRadius: 16,
         elevation: 6, }}>
-        <Image source={{uri:product.image.imageUrl}} style={styles.mainImage}></Image>
-        <Text style={styles.title}>{product.title}</Text>
-        <Text style={styles.category}>{product.category}</Text>
-        <Text style={styles.subCategory}>{product.subCategory}</Text>
-        <Text style={styles.price}>{product.price}{" / "}{product.pricingUnit.split(" ")[1]}</Text>
+        <Image source={{uri:item.image.imageUrl}} style={styles.mainImage}></Image>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.category}>{item.category}</Text>
+        <Text style={styles.subCategory}>{item.subCategory}</Text>
+        <Text style={styles.price}>{item.price}{" / "}{item.pricingUnit.split(" ")[1]}</Text>
         </View>
         <View style={styles.lowerHalf}>
             <Text style={styles.descriptionTitle}>Product Details</Text>
-            <Text style={styles.description}>{product.description}</Text>
+            <Text style={styles.description}>{item.description}</Text>
         </View>
          
     </ScrollView>
-    <TouchableOpacity onPress={()=>navigation.navigate("CheckoutScreen",product)} style={styles.continueButton}>
-            <Text style={styles.continueText}>Rent Now</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={handleChatRedirect} style={styles.chatBtn}>
-            <Ionicons name="chatbubble" size={24} style={{marginVertical: 12}} color="#fff" />
-    </TouchableOpacity>
         
     </View>
   )
@@ -147,4 +132,4 @@ const styles = StyleSheet.create({
       },
 })
 
-export default BuyProductDetails
+export default ListedItemScreen

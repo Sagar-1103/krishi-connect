@@ -10,13 +10,12 @@ import ForumDiscussionList from './screens/ForumList';
 const App = () => {
 
   return (
-
-    // <NavigationContainer>
-    //   <LoginProvider>
-    //     <AppNavigation/>
-    //   </LoginProvider>
-    // </NavigationContainer>
-    <ForumDiscussionList/>
-  );};
+    <NavigationContainer>
+      <LoginProvider>
+        <AppNavigation/>
+      </LoginProvider>
+    </NavigationContainer>
+  );
+};
 
 export default App;

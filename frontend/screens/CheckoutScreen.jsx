@@ -1,7 +1,9 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, Dimensions, FlatList } from 'react-native'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Updated import for icons
 import { Calendar } from "react-native-calendars";
+import { useLogin } from '../context/LoginProvider';
+import axios from 'axios';
 
 const { width } = Dimensions.get('window');
 
@@ -9,24 +11,25 @@ const CheckoutScreen = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isSelectingStartDate, setIsSelectingStartDate] = useState(true);
-  const pricePerDay = 2500; // Fixed price per day
+  const pricePerDay = 2500;
+  const {tempProduct} = useLogin();
+  
+  const [listings, setListings] = useState([]);
 
-  const [listings, setListings] = useState([
-    {
-        id: 1,
-        title: 'Harvester / Thrasher',
-        date: '19 March 2024',
-        price: 2500,
-        image: 'https://picsum.photos/500',
-    },
-    {
-        id: 2,
-        title: 'Tractor Plough Only',
-        date: '25 March 2024',
-        price: 600,
-        image: 'https://picsum.photos/500',
-    },
-  ]);
+  useEffect(()=>{
+    get();
+  },[])
+  
+  const get = async()=>{
+    try {
+      const response = await axios.get(`https://krishi-connect-product-service-nine.vercel.app/products/${tempProduct.authorId}`);
+      const res = await response.data;
+      setListings(res.data);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // Function to handle date selection
   const handleDateSelect = (date) => {
@@ -52,6 +55,9 @@ const CheckoutScreen = () => {
 
         const totalPrice = numDays * pricePerDay;
         console.log("Total Price: ₹", totalPrice);
+
+        console.log(startDate,date.dateString,numDays,totalPrice);
+        
       }
     }
   };
@@ -99,10 +105,10 @@ const CheckoutScreen = () => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.listingCard}>
-        <Image source={{ uri: item.image }} style={styles.listingImage} />
+        <Image source={{ uri: item.image.imageUrl }} style={styles.listingImage} />
         <View style={styles.listingDetails}>
             <Text style={styles.listingTitle}>{item.title}</Text>
-            <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} /> {item.date}</Text>
+            <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} /> {item.from}</Text>
             <Text style={styles.listingPrice}>₹{item.price} / day</Text>
         </View>
         <Ionicons name="chevron-forward" size={20} color="black" style={styles.chevron} />
@@ -124,13 +130,13 @@ const CheckoutScreen = () => {
         </Text>
 
         <TouchableOpacity style={styles.listingCard}>
-            <Image source={{ uri: 'https://picsum.photos/455' }} style={styles.listingImage} />
+            <Image source={{ uri: tempProduct.image.imageUrl }} style={styles.listingImage} />
             <View style={styles.listingDetails}>
-                <Text style={styles.listingTitle}>Tractor without Plough</Text>
-                <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} /> 19 September 2025</Text>
-                <Text style={styles.listingPrice}>{`₹ ${pricePerDay} / day`}</Text>
+                <Text style={styles.listingTitle}>{tempProduct.title}</Text>
+                <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} />{tempProduct.from}</Text>
+                <Text style={styles.listingPrice}>{`₹ ${tempProduct.price} / day`}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="black" style={styles.chevron} />
+            {/* <Ionicons name="chevron-forward" size={20} color="black" style={styles.chevron} /> */}
         </TouchableOpacity>
 
         <View style={styles.separator} />
@@ -176,7 +182,7 @@ const CheckoutScreen = () => {
             ) : (
                 <FlatList
                     data={listings}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item._id}
                     renderItem={renderItem}
                     nestedScrollEnabled={false}
                     style={{ height: 300 }} 

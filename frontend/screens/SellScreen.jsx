@@ -6,7 +6,6 @@ import { useLogin } from '../context/LoginProvider';
 import { useNavigation } from '@react-navigation/native';
 import { BACKEND_URL } from '@env';
 import axios from 'axios';
-import { log } from 'console';
 
 
 const { width } = Dimensions.get('window');
@@ -80,16 +79,8 @@ const SellScreen = () => {
             const data = await response.data;
             const res = data.data;
             
-            const r = res.map((i,index)=>{
-                return {
-                    id:index,
-                    title: i.title ,
-                    date: i.from,
-                    price: i.price,
-                    image: i.image.imageUrl,
-                }
-            })
-            setListings(r);
+            setListings(res);
+            
             
             
         } catch (error) {
@@ -98,11 +89,11 @@ const SellScreen = () => {
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.listingCard}>
-            <Image source={{ uri: item.image }} style={styles.listingImage} />
+        <TouchableOpacity onPress={()=>navigation.navigate("ListedItemScreen", { item })} style={styles.listingCard}>
+            <Image source={{ uri: item.image.imageUrl }} style={styles.listingImage} />
             <View style={styles.listingDetails}>
                 <Text style={styles.listingTitle}>{item.title}</Text>
-                <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} /> {item.date}</Text>
+                <Text style={styles.listingDate}><Ionicons name="calendar-outline" size={16} /> {item.from}</Text>
                 <Text style={styles.listingPrice}>₹{item.price} / day</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color="black" style={styles.chevron} />
@@ -131,8 +122,8 @@ const SellScreen = () => {
             ) : (
                 <FlatList 
                     data={listings} 
-                    keyExtractor={(item) => item.id.toString()} 
-                    renderItem={renderItem} 
+                    keyExtractor={(product) => product._id} 
+                    renderItem={renderItem}
                 />
             )}
         </View>

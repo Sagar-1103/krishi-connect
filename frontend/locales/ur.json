@@ -1,3 +1,15 @@
 {
-    "welcome": "خوش آمدید,"
+    "welcome": "دوبارہ خوش آمدید",
+    "username": "صارف نام یا ای میل",
+    "password": "پاس ورڈ",
+    "forgotPassword": "پاس ورڈ بھول گئے؟",
+    "login": "لاگ ان",
+    "or": "---- یا اس کے ساتھ جاری رکھیں ----",
+    "createNewAccount": "نیا اکاؤنٹ بنائیں",
+    "signup": "سائن اپ",
+    "confirmPassword": "پاس ورڈ کی تصدیق کریں",
+    "agreement": "جاری رکھتے ہوئے، آپ ہماری",
+    "termsAndCondition": " شرائط و ضوابط سے اتفاق کرتے ہیں",
+    "createAccount": "اکاؤنٹ بنائیں",
+    "alreadyHaveAccount": "میرے پاس پہلے سے ہی ایک اکاؤنٹ ہے"
 }

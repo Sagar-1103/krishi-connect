@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import auth from '@react-native-firebase/auth';
@@ -7,6 +7,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLogin } from '../context/LoginProvider';
 import { BACKEND_URL } from '@env';
+import { useTranslation } from "react-i18next";
+import { getLanguage } from "../i18n.js";
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,6 +19,15 @@ const SignUpScreen = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const {setUser,setRefreshToken,setAccessToken} = useLogin();
+  const { t, i18n } = useTranslation();
+  
+    useEffect(() => {
+      const loadLanguage = async () => {
+        const savedLanguage = await getLanguage();
+        i18n.changeLanguage(savedLanguage);
+      };
+      loadLanguage();
+    }, []);
 
   const handleSignup = async () => {
     if (!tempEmail || !tempPassword || !tempConfirmPassword) {
@@ -93,16 +104,16 @@ const SignUpScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Create an account</Text>
+      <Text style={styles.header}>{t('createNewAccount')}</Text>
       
       <View style={styles.inputContainer}>
         <Ionicons name="person" size={width * 0.05} color="gray" style={styles.icon} />
-        <TextInput value={tempEmail} onChangeText={setTempEmail} placeholderTextColor={"gray"} placeholder="Username or Email" style={styles.input} />
+        <TextInput value={tempEmail} onChangeText={setTempEmail} placeholderTextColor={"gray"} placeholder={t('username')} style={styles.input} />
       </View>
       
       <View style={styles.inputContainer}>
         <Ionicons name="lock-closed" size={width * 0.05} color="gray" style={styles.icon} />
-        <TextInput value={tempPassword} onChangeText={setTempPassword} placeholderTextColor={"gray"} placeholder="Password" style={styles.input} secureTextEntry={!passwordVisible} />
+        <TextInput value={tempPassword} onChangeText={setTempPassword} placeholderTextColor={"gray"} placeholder={t('password')} style={styles.input} secureTextEntry={!passwordVisible} />
         <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
           <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={width * 0.05} color="gray" />
         </TouchableOpacity>
@@ -110,21 +121,21 @@ const SignUpScreen = ({navigation}) => {
       
       <View style={styles.inputContainer}>
         <Ionicons name="lock-closed" size={width * 0.05} color="gray" style={styles.icon} />
-        <TextInput value={tempConfirmPassword} onChangeText={setTempConfirmPassword} placeholderTextColor={"gray"} placeholder="Confirm Password" style={styles.input} secureTextEntry={!confirmPasswordVisible} />
+        <TextInput value={tempConfirmPassword} onChangeText={setTempConfirmPassword} placeholderTextColor={"gray"} placeholder={t('confirmPassword')} style={styles.input} secureTextEntry={!confirmPasswordVisible} />
         <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
           <Ionicons name={confirmPasswordVisible ? "eye" : "eye-off"} size={width * 0.05} color="gray" />
         </TouchableOpacity>
       </View>
       
       <Text style={styles.termsText}>
-        By continuing, you agree with our <Text style={styles.termsLink}>terms and conditions</Text>.
+        {t('agreement')}<Text style={styles.termsLink}>{t('termsAndCondition')}</Text>.
       </Text>
       
       <TouchableOpacity onPress={handleSignup} style={styles.createAccountButton}>
-        <Text style={styles.createAccountText}>Create Account</Text>
+        <Text style={styles.createAccountText}>{t('createAccount')}</Text>
       </TouchableOpacity>
       
-      <Text style={styles.orText}>- OR Continue with -</Text>
+      <Text style={styles.orText}>{t('or')}</Text>
       
       <View style={styles.socialButtonsContainer}>
         <TouchableOpacity onPress={onGoogleButtonPress} style={styles.socialButton}>
@@ -139,7 +150,7 @@ const SignUpScreen = ({navigation}) => {
       </View>
       
       <Text style={styles.loginText}>
-        I Already Have an Account <Text onPress={()=>navigation.navigate("Login")} style={styles.loginLink}>Login</Text>
+        {t('alreadyHaveAccount')}<Text onPress={()=>navigation.navigate("Login")} style={styles.loginLink}>{t('login')}</Text>
       </Text>
     </View>
   );

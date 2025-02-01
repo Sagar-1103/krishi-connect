@@ -68,26 +68,26 @@ const SignInScreen = ({navigation}) => {
       
       <View style={styles.inputContainer}>
         <Ionicons name="person" size={width * 0.05} color="gray" style={styles.icon} />
-        <TextInput value={tempEmail} autoCapitalize="none" onChangeText={setTempEmail} placeholderTextColor={"gray"} placeholder="Username or Email" style={styles.input} />
+        <TextInput value={tempEmail} autoCapitalize="none" onChangeText={setTempEmail} placeholderTextColor={"gray"} placeholder={t('username')} style={styles.input} />
       </View>
       
       <View style={styles.inputContainer}>
         <Ionicons name="lock-closed" size={width * 0.05} color="gray" style={styles.icon} />
-        <TextInput value={tempPassword} onChangeText={setTempPassword} placeholder="Password" placeholderTextColor={"gray"} style={styles.input} secureTextEntry={!passwordVisible} />
+        <TextInput value={tempPassword} onChangeText={setTempPassword} placeholder={t('password')} placeholderTextColor={"gray"} style={styles.input} secureTextEntry={!passwordVisible} />
         <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
           <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={width * 0.05} color="gray" />
         </TouchableOpacity>
       </View>
       
       <Text style={styles.termsText}>
-        <Text style={styles.passLink}>Forgot Password ?</Text>
+        <Text style={styles.passLink}>{t('forgotPassword')}</Text>
       </Text>
       
       <TouchableOpacity onPress={handleLogin} style={styles.createAccountButton}>
-        <Text style={styles.createAccountText}>Login</Text>
+        <Text style={styles.createAccountText}>{t('login')}</Text>
       </TouchableOpacity>
       
-      <Text style={styles.orText}>- OR Continue with -</Text>
+      <Text style={styles.orText}>{t('or')}</Text>
       
       <View style={styles.socialButtonsContainer}>
         <TouchableOpacity style={styles.socialButton}>
@@ -102,7 +102,7 @@ const SignInScreen = ({navigation}) => {
       </View>
       
       <Text style={styles.loginText}>
-        Create An Account <Text onPress={()=>navigation.navigate("Signup")} style={styles.SignUpLink}>Sign Up</Text>
+        {t('createNewAccount')}<Text onPress={()=>navigation.navigate("Signup")} style={styles.SignUpLink}>{t('signup')}</Text>
       </Text>
     </View>
   );

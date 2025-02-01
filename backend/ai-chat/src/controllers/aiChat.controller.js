@@ -13,12 +13,6 @@ const geminiChat = AsyncHandler(async (req, res) => {
   
   const chatHistory = [];
 
-  //  const chatHistory = await AIChat.aggregate([
-  //   { $match: { userId: userId } },  // Filter by userId
-  //   { $sort: { createdAt: -1 } },    // Sort in descending order based on createdAt
-  //   { $limit: 5 }                    // Limit the results to 5 documents
-  // ]);  
-
   const userPrompt = await generatePrompt(query, questionSet, chatHistory);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const result = await model.generateContentStream(userPrompt);

@@ -4,26 +4,30 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useLogin } from '../context/LoginProvider';
 import { useNavigation } from '@react-navigation/native';
+import { BACKEND_URL } from '@env';
+import axios from 'axios';
+import { log } from 'console';
 
 
 const { width } = Dimensions.get('window');
 
 const SellScreen = () => {
+    const {setUploadingImage,user} = useLogin();
     const [listings, setListings] = useState([
-        // {
-        //     id: 1,
-        //     title: 'Harvester / Thrasher',
-        //     date: '19 March 2024',
-        //     price: 2500,
-        //     image: 'https://picsum.photos/500',
-        // },
-        // {
-        //     id: 2,
-        //     title: 'Tractor Plough Only',
-        //     date: '25 March 2024',
-        //     price: 600,
-        //     image: 'https://picsum.photos/500',
-        // },
+        {
+            id: 1,
+            title: 'Harvester / Thrasher',
+            date: '19 March 2024',
+            price: 2500,
+            image: 'https://picsum.photos/500',
+        },
+        {
+            id: 2,
+            title: 'Tractor Plough Only',
+            date: '25 March 2024',
+            price: 600,
+            image: 'https://picsum.photos/500',
+        },
     ]);
 
     const navigation = useNavigation();
@@ -71,9 +75,13 @@ const SellScreen = () => {
         cropperToolbarTitle:"Crop Eye Image",
     })
         .then(image => {
-            // setImageUri(image.path);
+            setUploadingImage({
+                uri: image.path,
+                name: image.filename || `profile_${Date.now()}.jpg`, 
+                type: image.mime || "image/jpeg",
+              });
             console.log(image.size);
-            navigation.navigate("Profile");
+            navigation.navigate("ProductDetailsScreen");
         })
         .catch(error => {
         console.log(error);
@@ -82,6 +90,22 @@ const SellScreen = () => {
 
     const fetchListings = async () => {
         try {
+            const url = `${BACKEND_URL}/p/products/${user._id}`;
+            const response = await axios.get(url);
+            const data = await response.data;
+            const res = data.data;
+            
+            const r = res.map((i,index)=>{
+                return {
+                    id:index,
+                    title: i.title ,
+                    date: i.from,
+                    price: i.price,
+                    image: i.image.imageUrl,
+                }
+            })
+            setListings(r);
+            
             
         } catch (error) {
             console.log('Error fetching listings:', error);

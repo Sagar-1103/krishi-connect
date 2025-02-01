@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, Image, Text, TextInput, TouchableOpacity, ScrollView, Modal } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Updated import for icons
 import { SelectList } from 'react-native-dropdown-select-list'; // Import dropdown list
+import { Calendar } from "react-native-calendars";
+
 
 const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a prop
   const [category, setCategory] = useState("");
@@ -13,6 +15,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
   const [price, setPrice] = useState("");
   const [area, setArea] = useState("");
   const [village, setVillage] = useState("");
+  const [availableSubCategories, setAvailableSubCategories] = useState("")
 
   // Define categories and their respective subcategories
   const categories = [
@@ -130,8 +133,71 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
     { key: '36', value: 'Jammu and Kashmir' }
   ];
 
-  const [availableSubCategories, setAvailableSubCategories] = useState([]);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [isSelectingStartDate, setIsSelectingStartDate] = useState(true);
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
+  // Function to handle date selection
+  const handleDateSelect = (date) => {
+    if (isSelectingStartDate) {
+      setStartDate(date.dateString);
+      setIsSelectingStartDate(false);
+      // If end date exists and is before new start date, clear it
+      if (endDate && date.dateString > endDate) {
+        setEndDate("");
+      }
+    } else {
+      // Ensure end date isn't before start date
+      if (date.dateString >= startDate) {
+        setEndDate(date.dateString);
+        setIsCalendarVisible(false);
+        setIsSelectingStartDate(true); // Reset for next time calendar opens
+      }
+    }
+  };
+
+  // Function to get marked dates object for calendar
+  const getMarkedDates = () => {
+    const marked = {};
+    
+    if (startDate && endDate) {
+      // Create date range
+      let currentDate = new Date(startDate);
+      const endDateObj = new Date(endDate);
+      
+      while (currentDate <= endDateObj) {
+        const dateString = currentDate.toISOString().split('T')[0];
+        if (dateString === startDate) {
+          marked[dateString] = { 
+            startingDay: true, 
+            color: '#4a90e2',
+            textColor: 'white'
+          };
+        } else if (dateString === endDate) {
+          marked[dateString] = {
+            endingDay: true, 
+            color: '#4a90e2',
+            textColor: 'white'
+          };
+        } else {
+          marked[dateString] = {
+            color: '#70a4df',
+            textColor: 'white'
+          };
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    } else if (startDate) {
+      marked[startDate] = {
+        selected: true,
+        color: '#4a90e2',
+        textColor: 'white'
+      };
+    }
+    
+    return marked;
+  };
   // Update the subcategory options based on the selected category
   useEffect(() => {
     if (category) {
@@ -163,7 +229,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setTitle} 
         placeholder="Title" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Category</Text>
@@ -174,8 +240,11 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholder="Select Category"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
-        color="black"
-        placeholderTextColor={'gray'}
+        dropdownItemStyles={styles.item} 
+        dropdownTextStyles={styles.itemText} 
+        placeholderTextColor={'black'}
+        inputStyles={styles.optionInput}
+        selectionColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Sub Category</Text>
@@ -187,7 +256,10 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
         color="black"
-        placeholderTextColor={'gray'}
+        dropdownItemStyles={styles.item} 
+        inputStyles={styles.optionInput}
+        dropdownTextStyles={styles.itemText} 
+        placeholderTextColor={'black'}
         disabled={category === ""} // Disable subcategory dropdown until category is selected
       />
 
@@ -198,7 +270,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setDescription} 
         placeholder="Enter Description" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Pricing Unit</Text>
@@ -210,11 +282,14 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
           { key: '3', value: 'Full Product'},
         ]}
         save="value"
+        inputStyles={styles.optionInput}
         placeholder="Select Pricing Unit"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
+        dropdownItemStyles={styles.item} 
+        dropdownTextStyles={styles.itemText}
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Price</Text>
@@ -225,12 +300,61 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         keyboardType="numeric" 
         placeholder="Enter your price" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => setIsCalendarVisible(true)}>
         <Text style={styles.buttonText}>Choose from Calendar</Text>
       </TouchableOpacity>
+
+      {/* Display selected date range */}
+      {startDate && (
+        <View style={{ marginTop: 10 }}>
+          <Text style={{ color: "black" }}>
+            Start Date: {startDate}
+          </Text>
+          {endDate && (
+            <Text style={{ color: "black", marginTop: 5 }}>
+              End Date: {endDate}
+            </Text>
+          )}
+        </View>
+      )}
+
+      {/* Calendar Modal */}
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={isCalendarVisible}
+        onRequestClose={() => {
+          setIsCalendarVisible(false);
+          setIsSelectingStartDate(true);
+        }}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContent}>
+            <Text style={{ color: "black", marginBottom: 10, textAlign: "center" }}>
+              {isSelectingStartDate ? "Select Start Date" : "Select End Date"}
+            </Text>
+            <Calendar
+              markedDates={getMarkedDates()}
+              onDayPress={handleDateSelect}
+              markingType="period"
+              minDate={isSelectingStartDate ? undefined : startDate}
+            />
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => {
+                setIsCalendarVisible(false);
+                setIsSelectingStartDate(true);
+              }}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
 
       <Text style={{ color: "black" }}>Location Details</Text>
       <TouchableOpacity style={styles.mapButton}>
@@ -244,7 +368,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setArea} 
         placeholder="Enter Your Area" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Village</Text>
@@ -254,7 +378,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setVillage} 
         placeholder="Enter your Village" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>State</Text>
@@ -266,7 +390,10 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
         color="black"
-        placeholderTextColor={'gray'}
+        inputStyles={styles.optionInput}
+        dropdownItemStyles={styles.item} 
+        dropdownTextStyles={styles.itemText} 
+        placeholderTextColor={'black'}
       />
 
       <TouchableOpacity style={styles.listButton}>
@@ -284,6 +411,10 @@ const styles = {
     borderRadius: 5,
     marginBottom: 10,
     color: "black",
+  },
+  optionInput: {
+    fontSize: 16,
+    color: 'black',
   },
   button: {
     backgroundColor: "#ddd",
@@ -332,6 +463,38 @@ const styles = {
     borderColor: "#ccc",
     padding: 10,
     color: "black",
+  },
+  item: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  itemText: {
+    color: 'black',
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+  },
+  closeButton: {
+    marginTop: 20,
+    backgroundColor: "#2c9c69",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  closeButtonText: {
+    color: "#fff",
+    fontSize: 16,
   },
 };
 

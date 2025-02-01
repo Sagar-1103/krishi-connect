@@ -2,6 +2,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Profile from "../screens/Profile";
+import SellScreen from "../screens/SellScreen";
+import AIChat from "../screens/AIChat";
+import Logout from "../tempScreens/LogoutScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,17 +16,17 @@ const tabData = [
   },
   {
     name: "Sell",
-    component: Profile,
+    component: SellScreen,
     iconName: "albums",
   },
   {
     name: "AI Chat",
-    component: Profile,
+    component: AIChat,
     iconName: "chatbubbles",
   },
   {
     name: "Profile",
-    component: Profile,
+    component: Logout,
     iconName: "person",
   },
 ];

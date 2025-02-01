@@ -14,6 +14,7 @@ import BuyProductDetails from '../screens/BuyProductDetails';
 import SplashScreen from '../screens/SplashScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ListedItemScreen from '../screens/ListedItemScreen';
+import CheckoutScreen from '../screens/CheckoutScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,7 @@ const AppNavigation = () => {
       <Stack.Screen name="BuyProductDetails" component={BuyProductDetails} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ListedItemScreen" component={ListedItemScreen} />
+      <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
     </Stack.Navigator>
   );
 

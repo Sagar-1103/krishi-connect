@@ -1,11 +1,19 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { useLogin } from '../context/LoginProvider';
 
 const BuyProductDetails = ({ route }) => {
     const { product } = route.params;
     const navigation = useNavigation();
+
+    const {setTempProduct} = useLogin();
+
+    useEffect(()=>{
+        setTempProduct(product)
+    },[])
+    
 
     const handleChatRedirect = async()=>{
         navigation.navigate("ChatScreen",{product});
@@ -36,7 +44,7 @@ const BuyProductDetails = ({ route }) => {
         </View>
          
     </ScrollView>
-    <TouchableOpacity style={styles.continueButton}>
+    <TouchableOpacity onPress={()=>navigation.navigate("CheckoutScreen",product)} style={styles.continueButton}>
             <Text style={styles.continueText}>Rent Now</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={handleChatRedirect} style={styles.chatBtn}>

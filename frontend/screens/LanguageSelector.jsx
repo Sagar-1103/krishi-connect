@@ -61,7 +61,7 @@ const LanguageSelector = ({navigation}) => {
 
       {/* Fixed Login Button */}
       <TouchableOpacity onPress={()=>navigation.navigate("Login")} style={styles.continueButton}>
-        <Text style={styles.continueText}>Continue</Text>
+        <Text style={styles.continueText}>{t('continue')}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -1,13 +1,13 @@
 const generatePrompt = async (query, questionSet, chatHistory) => {
-  let historyContext = "";
+  // let historyContext = "";
 
-  // Incorporating previous chat history if available
-  if (chatHistory.length > 0) {
-    historyContext = `Previous user interactions:\n`;
-    chatHistory.forEach((chat) => {
-      historyContext += `User: ${chat.query}\nAI: ${chat.reply}\n`;
-    });
-  }
+  // // Incorporating previous chat history if available
+  // if (chatHistory.length > 0) {
+  //   historyContext = `Previous user interactions:\n`;
+  //   chatHistory.forEach((chat) => {
+  //     historyContext += `User: ${chat.query}\nAI: ${chat.reply}\n`;
+  //   });
+  // }
 
   const userPrompt = `You are an AI assistant designed specifically to support agriculture, farming, and rural development. Your task is to provide  accurate, useful, and relevant information  on farming-related topics, including but not limited to:  
   - Crop production (fertilizers, pesticides, soil health, irrigation techniques)  
@@ -29,7 +29,7 @@ const generatePrompt = async (query, questionSet, chatHistory) => {
   ${JSON.stringify(questionSet)}  
 
    User Search History:   
-  ${historyContext}  
+  ${chatHistory}  
 
    Response Guidelines:   
   - Answer  all  farming-related queries with  detailed, informative, and practical  advice.  

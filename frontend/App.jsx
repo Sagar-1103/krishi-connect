@@ -9,12 +9,12 @@ import HomeScreen from './screens/SellScreen';
 const App = () => {
 
   return (
-    // <NavigationContainer>
-    //   <LoginProvider>
-    //     <AppNavigation/>
-    //   </LoginProvider>
-    // </NavigationContainer>
-    <HomeScreen/>
+    <NavigationContainer>
+      <LoginProvider>
+        <AppNavigation/>
+      </LoginProvider>
+    </NavigationContainer>
+    // <HomeScreen/>
   );
 };
 

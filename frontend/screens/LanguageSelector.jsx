@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { setLanguage, getLanguage } from "../i18n.js";
 
 const { width, height } = Dimensions.get("window");
 
@@ -11,12 +12,23 @@ const languages = [
   { code: "ta", name: "தமிழ்" },
   { code: "te", name: "తెలుగు" },
   { code: "mr", name: "मराठी" },
-  { code: "gu", name: "ગુજરાતી" },
   { code: "ur", name: "اُردُو" },
 ];
 
 const LanguageSelector = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const storedLanguage = await getLanguage();
+      setSelectedLanguage(storedLanguage);
+    })();
+  }, []);
+
+  const handleLanguageChange = async (code) => {
+    await setLanguage(code);
+    setSelectedLanguage(code);
+  };
 
   return (
     <View style={styles.container}>
@@ -29,7 +41,7 @@ const LanguageSelector = ({navigation}) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[styles.languageItem, selectedLanguage === item.code && styles.selectedItem]}
-            onPress={() => setSelectedLanguage(item.code)}
+            onPress={() => handleLanguageChange(item.code)}
           >
             <Text style={styles.languageText}>{item.name}</Text>
             {selectedLanguage === item.code && <Ionicons name="checkmark" size={24} color="green" />}

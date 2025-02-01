@@ -20,20 +20,20 @@ const LanguageSelector = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const { t, i18n } = useTranslation();
   
-    useEffect(() => {
-      const loadLanguage = async () => {
-        const savedLanguage = await getLanguage();
-        i18n.changeLanguage(savedLanguage);
-      };
-      loadLanguage();
-    }, []);
+  //   useEffect(() => {
+  //     const loadLanguage = async () => {
+  //       const savedLanguage = await getLanguage();
+  //       i18n.changeLanguage(savedLanguage);
+  //     };
+  //     loadLanguage();
+  //   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const storedLanguage = await getLanguage();
-      setSelectedLanguage(storedLanguage);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const storedLanguage = await getLanguage();
+  //     setSelectedLanguage(storedLanguage);
+  //   })();
+  // }, []);
 
   const handleLanguageChange = async (code) => {
     await setLanguage(code);

@@ -12,7 +12,20 @@
           "package_name": "com.krishiConnect"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "742876151756-p27nqcji5mndaljda20bqf172s8b05d1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.krishiConnect",
+            "certificate_hash": "62d62b3fa242eb0a8d0f9234e05c0227ebcec135"
+          }
+        },
+        {
+          "client_id": "742876151756-joagajdc8nj8jtkr9u0tol5eqga638ge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCtJLjVoE5SKj09l9zhbjGMAqVdqiUWens"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742876151756-joagajdc8nj8jtkr9u0tol5eqga638ge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

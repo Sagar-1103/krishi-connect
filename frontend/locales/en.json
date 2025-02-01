@@ -1,3 +1,15 @@
 {
-    "welcome": "Welcome Back"
+    "welcome": "Welcome Back",
+    "username": "Username or Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password ?",
+    "login": "Login",
+    "or": "---- OR Continue with ----",
+    "createNewAccount": "Create An Account",
+    "signup": "Sign Up",
+    "confirmPassword": "Confirm Password",
+    "agreement": "By continuing, you agree with our",
+    "termsAndCondition": " terms and conditions",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "I Already Have an Account "
 }

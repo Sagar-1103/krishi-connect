@@ -4,7 +4,9 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigation from "./AppNavigtion/AppNavigation"
 import LoginProvider from './context/LoginProvider';
-import ProductDetailsScreen from './screens/SellProductDetails';
+import ChatScreen from './screens/ChatScreen';
+import HomeScreen from './screens/Home';
+import SplashScreen from './screens/SplashScreen';
 
 const App = () => {
 
@@ -14,7 +16,7 @@ const App = () => {
     //     <AppNavigation/>
     //   </LoginProvider>
     // </NavigationContainer>
-    <ProductDetailsScreen/>
+    <SplashScreen/>
   );
 };
 

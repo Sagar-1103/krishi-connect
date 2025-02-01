@@ -1,9 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, Dimensions, FlatList } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, Dimensions, FlatList, Alert } from 'react-native'
 import React, { useEffect, useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Updated import for icons
 import { Calendar } from "react-native-calendars";
 import { useLogin } from '../context/LoginProvider';
 import axios from 'axios';
+import RazorpayCheckout from "react-native-razorpay";
 
 const { width } = Dimensions.get('window');
 
@@ -12,7 +13,9 @@ const CheckoutScreen = () => {
   const [endDate, setEndDate] = useState("");
   const [isSelectingStartDate, setIsSelectingStartDate] = useState(true);
   const pricePerDay = 2500;
-  const {tempProduct} = useLogin();
+  const {tempProduct,user} = useLogin();
+  const [totalDays,setTotalDays] = useState(0);
+  const [tempTotalPrice,setTempTotalPrice] = useState(0);
   
   const [listings, setListings] = useState([]);
 
@@ -31,8 +34,63 @@ const CheckoutScreen = () => {
     }
   }
 
+  const handlePay = async()=>{
+    try {
+      const response = await axios.post("https://krishi-connect-product-service-nine.vercel.app/products/purchase", {
+        startDate,
+        endDate,
+        numDays:totalDays,
+        totalPrice:tempTotalPrice,
+        buyerId:user._id,
+        productId:tempProduct._id
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const res = await response.data;
+      const amount = totalPrice;
+      if (!amount || isNaN(amount) || amount < 1) {
+        Alert.alert("Invalid Amount", "Please enter a valid amount.");
+        return;
+      }
+
+      const { data } = await axios.post("https://krishi-connect-payment-service.vercel.app/pay/create-order", {amount});
+
+    const options = {
+      key: "rzp_test_uAH0DM2C8YpfxW",
+      amount: data.data.amount,
+      currency: "INR",
+      name: "Krishi Connect",
+      description: "Purchase Description",
+      order_id: data.data.id,
+      prefill: {
+        name: "Sagar Shirgaonkar",
+        email: "sagar@example.com",
+        contact: "9999999999",
+      },
+      theme: { color: "#3399cc" },
+    };
+
+    RazorpayCheckout.open(options)
+      .then(async (response) => {
+        const verifyRes = await axios.post("https://krishi-connect-payment-service.vercel.app/pay/verify-payment", response);
+        Alert.alert("Payment Success", verifyRes.data.message);
+      })
+      .catch((error) => {
+        Alert.alert("Payment Failed", error.description || "Something went wrong!");
+      });
+      
+      
+    } catch (error) {
+      console.log("Error : ",error);
+      
+    }
+  }
+
   // Function to handle date selection
-  const handleDateSelect = (date) => {
+  const handleDateSelect = async(date) => {
     if (isSelectingStartDate) {
       setStartDate(date.dateString);
       setIsSelectingStartDate(false);
@@ -55,9 +113,10 @@ const CheckoutScreen = () => {
 
         const totalPrice = numDays * pricePerDay;
         console.log("Total Price: ₹", totalPrice);
+        setTotalDays(numDays);
+        setTempTotalPrice(totalPrice);
 
         console.log(startDate,date.dateString,numDays,totalPrice);
-        
       }
     }
   };
@@ -191,7 +250,7 @@ const CheckoutScreen = () => {
             )}
 
     </ScrollView>
-    <TouchableOpacity style={styles.continueButton}>
+    <TouchableOpacity onPress={handlePay} style={styles.continueButton}>
             <Text style={styles.continueText}>Payment</Text>
         </TouchableOpacity>
     </View>

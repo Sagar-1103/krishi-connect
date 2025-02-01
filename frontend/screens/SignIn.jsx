@@ -4,7 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 const { width, height } = Dimensions.get("window");
 
-const SignInScreen = () => {
+const SignInScreen = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
@@ -47,7 +47,7 @@ const SignInScreen = () => {
       </View>
       
       <Text style={styles.loginText}>
-        Create An Account <Text style={styles.SignUpLink}>Sign Up</Text>
+        Create An Account <TouchableOpacity onPress={()=>navigation.navigate("Signup")} ><Text style={styles.SignUpLink}>Sign Up</Text></TouchableOpacity> 
       </Text>
     </View>
   );

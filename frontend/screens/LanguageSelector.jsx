@@ -15,7 +15,7 @@ const languages = [
   { code: "ur", name: "اُردُو" },
 ];
 
-const LanguageSelector = () => {
+const LanguageSelector = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
 
   return (
@@ -38,7 +38,7 @@ const LanguageSelector = () => {
       />
 
       {/* Fixed Login Button */}
-      <TouchableOpacity style={styles.continueButton}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Login")} style={styles.continueButton}>
         <Text style={styles.continueText}>Continue</Text>
       </TouchableOpacity>
     </View>

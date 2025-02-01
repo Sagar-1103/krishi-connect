@@ -3,14 +3,16 @@ import {LogBox} from 'react-native';
 LogBox.ignoreLogs(['new NativeEventEmitter']);
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigation from "./AppNavigtion/AppNavigation"
-import LanguageSelector from './screens/LanguageSelector';
+import LoginProvider from './context/LoginProvider';
 
 const App = () => {
+
   return (
-    // <NavigationContainer>
-    //   <AppNavigation/>
-    // </NavigationContainer>
-    <LanguageSelector/>
+    <NavigationContainer>
+      <LoginProvider>
+        <AppNavigation/>
+      </LoginProvider>
+    </NavigationContainer>
   );
 };
 

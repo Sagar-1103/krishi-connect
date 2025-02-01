@@ -9,12 +9,11 @@ import ProductDetail from './screens/BuyProductDetails';
 const App = () => {
 
   return (
-    // <NavigationContainer>
-    //   <LoginProvider>
-    //     <AppNavigation/>
-    //   </LoginProvider>
-    // </NavigationContainer>
-    <ProductDetail/>
+    <NavigationContainer>
+      <LoginProvider>
+        <AppNavigation/>
+      </LoginProvider>
+    </NavigationContainer>
   );
 };
 

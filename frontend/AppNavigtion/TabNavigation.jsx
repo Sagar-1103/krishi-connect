@@ -5,13 +5,14 @@ import Profile from "../screens/Profile";
 import SellScreen from "../screens/SellScreen";
 import AIChat from "../screens/AIChat";
 import Logout from "../tempScreens/LogoutScreen";
+import HomeScreen from "../screens/Home";
 
 const Tab = createBottomTabNavigator();
 
 const tabData = [
   {
     name: "Home",
-    component: Profile,
+    component: HomeScreen,
     iconName: "home",
   },
   {

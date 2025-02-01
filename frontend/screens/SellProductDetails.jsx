@@ -163,7 +163,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setTitle} 
         placeholder="Title" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Category</Text>
@@ -174,8 +174,11 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholder="Select Category"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
-        color="black"
-        placeholderTextColor={'gray'}
+        dropdownItemStyles={styles.item} 
+        dropdownTextStyles={styles.itemText} 
+        placeholderTextColor={'black'}
+        inputStyles={styles.optionInput}
+        selectionColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Sub Category</Text>
@@ -187,7 +190,10 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
         color="black"
-        placeholderTextColor={'gray'}
+        dropdownItemStyles={styles.item} 
+        inputStyles={styles.optionInput}
+        dropdownTextStyles={styles.itemText} 
+        placeholderTextColor={'black'}
         disabled={category === ""} // Disable subcategory dropdown until category is selected
       />
 
@@ -198,7 +204,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setDescription} 
         placeholder="Enter Description" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Pricing Unit</Text>
@@ -210,11 +216,14 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
           { key: '3', value: 'Full Product'},
         ]}
         save="value"
+        inputStyles={styles.optionInput}
         placeholder="Select Pricing Unit"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
+        dropdownItemStyles={styles.item} 
+        dropdownTextStyles={styles.itemText}
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Price</Text>
@@ -225,7 +234,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         keyboardType="numeric" 
         placeholder="Enter your price" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <TouchableOpacity style={styles.button}>
@@ -244,7 +253,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setArea} 
         placeholder="Enter Your Area" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>Village</Text>
@@ -254,7 +263,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         onChangeText={setVillage} 
         placeholder="Enter your Village" 
         color="black"
-        placeholderTextColor={'gray'}
+        placeholderTextColor={'black'}
       />
 
       <Text style={{ color: "black" }}>State</Text>
@@ -266,7 +275,10 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
         color="black"
-        placeholderTextColor={'gray'}
+        inputStyles={styles.optionInput}
+        dropdownItemStyles={styles.item} 
+        dropdownTextStyles={styles.itemText} 
+        placeholderTextColor={'black'}
       />
 
       <TouchableOpacity style={styles.listButton}>
@@ -284,6 +296,10 @@ const styles = {
     borderRadius: 5,
     marginBottom: 10,
     color: "black",
+  },
+  optionInput: {
+    fontSize: 16,
+    color: 'black',
   },
   button: {
     backgroundColor: "#ddd",
@@ -332,6 +348,15 @@ const styles = {
     borderColor: "#ccc",
     padding: 10,
     color: "black",
+  },
+  item: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  itemText: {
+    color: 'black',
   },
 };
 

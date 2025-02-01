@@ -110,12 +110,14 @@ const CheckoutScreen = () => {
   );
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#fff", padding: 20 }} nestedScrollEnabled={false}>
-        <View style={styles.header}>
+    <View style={styles.container}>
+      <View style={styles.header}>
             <TouchableOpacity><Ionicons name="arrow-back" size={24} color="black" /></TouchableOpacity>
             <Image source={require('../assets/krishiConnectLogo.png')} style={styles.logo} />
             <TouchableOpacity><Ionicons name="settings-outline" size={0} color="black" /></TouchableOpacity>
         </View>
+    <ScrollView style={{ flex: 1, backgroundColor: "#fff" }} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+        
 
         <Text style={{ fontSize: 20, fontWeight: "bold", marginVertical: '6%', marginHorizontal: '6%', color: "black" }}>
             Rent Now
@@ -176,13 +178,17 @@ const CheckoutScreen = () => {
                     data={listings}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={renderItem}
-                    nestedScrollEnabled={true}
+                    nestedScrollEnabled={false}
                     style={{ height: 300 }} 
                 />
 
             )}
 
     </ScrollView>
+    <TouchableOpacity style={styles.continueButton}>
+            <Text style={styles.continueText}>Payment</Text>
+        </TouchableOpacity>
+    </View>
   )
 }
 
@@ -190,7 +196,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f9f9f9',
-        padding: '5%',
     },
     header: {
         flexDirection: 'row',
@@ -279,6 +284,27 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: 'black',
         // marginTop: '5%',
+    },
+    container: {
+      flex: 1,
+      backgroundColor: '#f9f9f9',
+      padding: '5%',
+  },
+    continueButton: {
+      position: "absolute",
+      bottom: 20,
+      right:30,
+      backgroundColor: "green",
+      paddingVertical: "5%",
+      width: "60%",
+      borderRadius: 32,
+      alignItems: "center",
+      zIndex: 999,
+    },
+    continueText: {
+      color: "white",
+      fontSize: 18,
+      fontWeight: "bold",
     },
     })
 

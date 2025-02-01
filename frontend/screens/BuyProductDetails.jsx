@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from 'rea
 import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const CheckoutScreen = () => {
+const BuyProductDetails = () => {
   return (
     <View style={styles.container}>
     <View style={styles.header}>
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
       },
 })
 
-export default CheckoutScreen
+export default BuyProductDetails;

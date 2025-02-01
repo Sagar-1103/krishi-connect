@@ -3,7 +3,7 @@ import { app } from "./src/app.js";
 import connectDB from "./src/config/database.config.js";
 dotenv.config();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3003;
 
 connectDB()
   .then(() => {
@@ -13,7 +13,7 @@ connectDB()
     });
 
     app.listen(PORT, () => {
-      console.log(`Chat-Service running on port ${PORT}`);
+      console.log(`User-Service running on port ${PORT}`);
     });
   })
   .catch((err) => {

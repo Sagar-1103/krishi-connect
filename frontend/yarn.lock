@@ -6625,6 +6625,11 @@ react-native-dotenv@^3.4.11:
   dependencies:
     dotenv "^16.4.5"
 
+react-native-dropdown-select-list@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/react-native-dropdown-select-list/-/react-native-dropdown-select-list-2.0.5.tgz"
+  integrity sha512-TepbcagQVUMB6nLuIlVU2ghRpQHAECOeZWe8K04ymW6NqbKbxuczZSDFfdCiABiiQ2dFD+8Dz65y4K7/uUEqGg==
+
 react-native-fs@^2.20.0:
   version "2.20.0"
   resolved "https://registry.npmjs.org/react-native-fs/-/react-native-fs-2.20.0.tgz"

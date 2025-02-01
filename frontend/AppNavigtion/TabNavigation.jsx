@@ -3,6 +3,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import Logo from '../assets/Logo.png';
 import Profile from "../screens/Profile"
+import Logout from '../tempScreens/LogoutScreen';
 const Tab = createBottomTabNavigator();
 
 const tabData = [
@@ -16,7 +17,7 @@ const tabData = [
     },
     {
         name: 'Logout',
-        component: Profile,
+        component: Logout,
         icons: {
             inactive: Logo,
             active: Logo,

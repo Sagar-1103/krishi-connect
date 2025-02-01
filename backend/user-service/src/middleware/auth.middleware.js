@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 dotenv.config()
 
 const verifyJWT = AsyncHandler(async(req,_,next)=>{
-
     try {
         const token = req.cookies?.accessToken ||req.body.token|| req.header("Authorization")?.replace("Bearer ","");
         if (!token) {

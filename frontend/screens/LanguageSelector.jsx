@@ -18,7 +18,7 @@ const languages = [
 
 const LanguageSelector = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const { t, i18n } = useTranslation();
+  // const { t, i18n } = useTranslation();
   
   //   useEffect(() => {
   //     const loadLanguage = async () => {
@@ -28,12 +28,12 @@ const LanguageSelector = ({navigation}) => {
   //     loadLanguage();
   //   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const storedLanguage = await getLanguage();
-  //     setSelectedLanguage(storedLanguage);
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      const storedLanguage = await getLanguage();
+      setSelectedLanguage(storedLanguage);
+    })();
+  }, []);
 
   const handleLanguageChange = async (code) => {
     await setLanguage(code);
@@ -42,7 +42,7 @@ const LanguageSelector = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>{t('chooseLang')}</Text>
+      <Text style={styles.header}>Choose Language</Text>
       <FlatList
         style={styles.list}
         data={languages}
@@ -61,7 +61,7 @@ const LanguageSelector = ({navigation}) => {
 
       {/* Fixed Login Button */}
       <TouchableOpacity onPress={()=>navigation.navigate("Login")} style={styles.continueButton}>
-        <Text style={styles.continueText}>{t('continue')}</Text>
+        <Text style={styles.continueText}>Continue</Text>
       </TouchableOpacity>
     </View>
   );

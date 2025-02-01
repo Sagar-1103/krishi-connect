@@ -3,6 +3,7 @@ import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet, Dimensions, 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useLogin } from '../context/LoginProvider';
+import { useNavigation } from '@react-navigation/native';
 
 
 const { width } = Dimensions.get('window');
@@ -24,6 +25,8 @@ const SellScreen = () => {
         //     image: 'https://picsum.photos/500',
         // },
     ]);
+
+    const navigation = useNavigation();
 
     useEffect(() => {
         perm();
@@ -70,6 +73,7 @@ const SellScreen = () => {
         .then(image => {
             // setImageUri(image.path);
             console.log(image.size);
+            navigation.navigate("Profile");
         })
         .catch(error => {
         console.log(error);

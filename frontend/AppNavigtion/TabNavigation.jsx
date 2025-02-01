@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Profile from "../screens/Profile";
+import SellScreen from "../screens/SellScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,7 +14,7 @@ const tabData = [
   },
   {
     name: "Sell",
-    component: Profile,
+    component: SellScreen,
     iconName: "albums",
   },
   {

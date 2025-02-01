@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
+const { width, height } = Dimensions.get("window");
 
 const languages = [
   { code: "en", name: "English"},
@@ -10,7 +12,7 @@ const languages = [
   { code: "te", name: "తెలుగు" },
   { code: "mr", name: "मराठी" },
   { code: "gu", name: "ગુજરાતી" },
-  { code: "ur", name: "اُردُو" }
+  { code: "ur", name: "اُردُو" },
 ];
 
 const LanguageSelector = () => {
@@ -20,8 +22,10 @@ const LanguageSelector = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Choose Language</Text>
       <FlatList
+        style={styles.list}
         data={languages}
         keyExtractor={(item) => item.code}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[styles.languageItem, selectedLanguage === item.code && styles.selectedItem]}
@@ -32,6 +36,11 @@ const LanguageSelector = () => {
           </TouchableOpacity>
         )}
       />
+
+      {/* Fixed Login Button */}
+      <TouchableOpacity style={styles.continueButton}>
+        <Text style={styles.continueText}>Continue</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -73,6 +82,25 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#333",
   },
+  continueButton: {
+    position: "absolute",
+    bottom: 30,
+    alignSelf: "center",
+    backgroundColor: "green",
+    paddingVertical: "4%",
+    width: "90%",
+    borderRadius: 8,
+    alignItems: "center",
+    zIndex: 999,
+  },
+  continueText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  list: {
+    marginBottom: "25%",
+  }
 });
 
 export default LanguageSelector;

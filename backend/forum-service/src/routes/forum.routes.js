@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getAllPosts, getPost, postForum, upvotePost } from "../controllers/forum.controller.js";
-import { getAllReplies, postReply, upvoteReply } from "../controllers/router.controller.js";
+import { getAllReplies, postReply, upvoteReply } from "../controllers/reply.controller.js";
 
 const router = Router();
 

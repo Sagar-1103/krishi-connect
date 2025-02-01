@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-import homeRouter from "./routes/home.routes.js";
-import forumRouter from "./routes/forum.routes.js";
+import homeRouter from "./routes/home.routes.js"
 
 const app = express();
 
@@ -13,7 +12,6 @@ app.use(cors({
 app.use(express.urlencoded({extended:true,limit:"16kb"}));
 app.use(express.json({limit:"16kb"}));
 
-app.use("/",homeRouter);
-app.use("/forums",forumRouter);
+app.use("/",homeRouter)
 
 export {app}

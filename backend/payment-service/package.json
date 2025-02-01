@@ -1,7 +1,7 @@
 {
-  "name": "forum-service",
+  "name": "payment-service",
   "version": "1.0.0",
-  "description": "Forum Service",
+  "description": "Payment Service",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -11,10 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.5"
+    "mongoose": "^8.9.5",
+    "razorpay": "^2.9.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

@@ -129,8 +129,6 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
     { key: '35', value: 'Ladakh' },
     { key: '36', value: 'Jammu and Kashmir' }
   ];
-  
-  
 
   const [availableSubCategories, setAvailableSubCategories] = useState([]);
 
@@ -149,7 +147,7 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
 
-      <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
+      <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center", marginBottom: 10, color: "black" }}>
         Product Details
       </Text>
 
@@ -158,15 +156,17 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         style={{ height: 150, width: '100%', borderRadius: 10, marginBottom: 10 }} 
       />
 
-      <Text>Title</Text>
+      <Text style={{ color: "black" }}>Title</Text>
       <TextInput 
         style={styles.input} 
         value={title} 
         onChangeText={setTitle} 
         placeholder="Title" 
+        color="black"
+        placeholderTextColor={'gray'}
       />
 
-      <Text>Category</Text>
+      <Text style={{ color: "black" }}>Category</Text>
       <SelectList
         setSelected={setCategory}
         data={categories}
@@ -174,9 +174,11 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholder="Select Category"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
+        color="black"
+        placeholderTextColor={'gray'}
       />
 
-      <Text>Sub Category</Text>
+      <Text style={{ color: "black" }}>Sub Category</Text>
       <SelectList
         setSelected={setSubCategory}
         data={availableSubCategories}
@@ -184,18 +186,22 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholder="Select Sub Category"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
+        color="black"
+        placeholderTextColor={'gray'}
         disabled={category === ""} // Disable subcategory dropdown until category is selected
       />
 
-      <Text>Description</Text>
+      <Text style={{ color: "black" }}>Description</Text>
       <TextInput 
         style={styles.input} 
         value={description} 
         onChangeText={setDescription} 
         placeholder="Enter Description" 
+        color="black"
+        placeholderTextColor={'gray'}
       />
 
-      <Text>Pricing Unit</Text>
+      <Text style={{ color: "black" }}>Pricing Unit</Text>
       <SelectList
         setSelected={setPricingUnit}
         data={[
@@ -207,43 +213,51 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholder="Select Pricing Unit"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
+        color="black"
+        placeholderTextColor={'gray'}
       />
 
-      <Text>Price</Text>
+      <Text style={{ color: "black" }}>Price</Text>
       <TextInput 
         style={styles.input} 
         value={price} 
         onChangeText={setPrice} 
         keyboardType="numeric" 
         placeholder="Enter your price" 
+        color="black"
+        placeholderTextColor={'gray'}
       />
 
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Choose from Calendar</Text>
       </TouchableOpacity>
 
-      <Text>Location Details</Text>
+      <Text style={{ color: "black" }}>Location Details</Text>
       <TouchableOpacity style={styles.mapButton}>
         <Text style={styles.buttonText}>Choose on Map</Text>
       </TouchableOpacity>
 
-      <Text>Area</Text>
+      <Text style={{ color: "black" }}>Area</Text>
       <TextInput 
         style={styles.input} 
         value={area} 
         onChangeText={setArea} 
         placeholder="Enter Your Area" 
+        color="black"
+        placeholderTextColor={'gray'}
       />
 
-      <Text>Village</Text>
+      <Text style={{ color: "black" }}>Village</Text>
       <TextInput 
         style={styles.input} 
         value={village} 
         onChangeText={setVillage} 
         placeholder="Enter your Village" 
+        color="black"
+        placeholderTextColor={'gray'}
       />
 
-      <Text>State</Text>
+      <Text style={{ color: "black" }}>State</Text>
       <SelectList
         setSelected={setState}
         data={states}
@@ -251,7 +265,9 @@ const ProductDetailsScreen = ({ navigation }) => { // Accept navigation as a pro
         placeholder="Select your state"
         boxStyles={styles.dropdown}
         dropdownStyles={styles.dropdownList}
-        />
+        color="black"
+        placeholderTextColor={'gray'}
+      />
 
       <TouchableOpacity style={styles.listButton}>
         <Text style={styles.listButtonText}>List my Product</Text>
@@ -267,6 +283,7 @@ const styles = {
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+    color: "black",
   },
   button: {
     backgroundColor: "#ddd",
@@ -274,6 +291,7 @@ const styles = {
     borderRadius: 5,
     alignItems: "center",
     marginBottom: 10,
+    color: "black",
   },
   mapButton: {
     backgroundColor: "#e6f4ea",
@@ -283,6 +301,7 @@ const styles = {
     borderWidth: 1,
     borderColor: "#2c9c69",
     marginBottom: 10,
+    color: "black",
   },
   listButton: {
     backgroundColor: "#2c9c69",
@@ -290,13 +309,14 @@ const styles = {
     borderRadius: 5,
     alignItems: "center",
     marginTop: 10,
+    color: "black",
   },
   buttonText: {
     color: "black",
     fontWeight: "bold",
   },
   listButtonText: {
-    color: "white",
+    color: "black",
     fontWeight: "bold",
   },
   dropdown: {
@@ -305,11 +325,13 @@ const styles = {
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+    color: "black",
   },
   dropdownList: {
     borderRadius: 5,
     borderColor: "#ccc",
     padding: 10,
+    color: "black",
   },
 };
 

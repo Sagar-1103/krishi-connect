@@ -9,12 +9,12 @@ import ProductDetailsScreen from './screens/SellProductDetails';
 const App = () => {
 
   return (
-    // <NavigationContainer>
-    //   <LoginProvider>
-    //     <AppNavigation/>
-    //   </LoginProvider>
-    // </NavigationContainer>
-    <ProductDetailsScreen/>
+    <NavigationContainer>
+      <LoginProvider>
+        <AppNavigation/>
+      </LoginProvider>
+    </NavigationContainer>
+    // <ProductDetailsScreen/>
   );
 };
 

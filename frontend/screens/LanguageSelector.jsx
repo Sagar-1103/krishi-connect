@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useTranslation } from "react-i18next";
 import { setLanguage, getLanguage } from "../i18n.js";
 
 const { width, height } = Dimensions.get("window");
@@ -17,6 +18,15 @@ const languages = [
 
 const LanguageSelector = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const { t, i18n } = useTranslation();
+  
+    useEffect(() => {
+      const loadLanguage = async () => {
+        const savedLanguage = await getLanguage();
+        i18n.changeLanguage(savedLanguage);
+      };
+      loadLanguage();
+    }, []);
 
   useEffect(() => {
     (async () => {
@@ -32,7 +42,7 @@ const LanguageSelector = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Choose Language</Text>
+      <Text style={styles.header}>{t('chooseLang')}</Text>
       <FlatList
         style={styles.list}
         data={languages}

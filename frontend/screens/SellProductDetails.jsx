@@ -48,8 +48,9 @@ const ProductDetailsScreen = ({ navigation }) => {
     }
     try {
 
-    const isConnected = (await NetInfo.fetch()).isConnected;
-    const formData = new FormData();
+      const isConnected = (await NetInfo.fetch()).isConnected;
+      
+      const formData = new FormData();
       
     formData.append('title', title);
     formData.append('category', category);

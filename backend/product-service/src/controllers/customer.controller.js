@@ -1,5 +1,6 @@
 import { Order } from "../models/order.model.js";
 import { Product } from "../models/product.model.js";
+import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { AsyncHandler } from "../utils/AsyncHandler.js";
 
@@ -11,7 +12,7 @@ const getItems = AsyncHandler(async(req,res)=>{
 const purchasing = AsyncHandler(async(req,res)=>{
     const {startDate,endDate,numDays,totalPrice,buyerId,productId} = req.body;
 
-    if(!startDate || !endDate || !numDays || !totalPrice,buyerId || !productId){
+    if(!startDate || !endDate || !numDays || !totalPrice ||!buyerId || !productId){
         throw new ApiError(400,"Please provide all the details.");
     }
 
@@ -23,7 +24,7 @@ const purchasing = AsyncHandler(async(req,res)=>{
         throw new ApiError(400,"No order made");
     }
 
-    return res.status(201).json(new ApiResponse(200, items, "Order Created."));
+    return res.status(201).json(new ApiResponse(200, createdOrder, "Order Created."));
 })
 
 export {getItems,purchasing};

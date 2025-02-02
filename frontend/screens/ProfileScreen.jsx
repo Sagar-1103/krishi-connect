@@ -7,7 +7,7 @@ import { BACKEND_URL } from '@env';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = () => {
     const {setUser,setAccessToken,setRefreshToken} = useLogin();
     const navigation = useNavigation();
     const handleLogout = async()=>{

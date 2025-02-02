@@ -34,7 +34,7 @@ const ProfileScreen = () => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "rgb(239, 239, 239)", padding: 20, paddingTop: 30, paddingHorizontal: 30 }} nestedScrollEnabled={false}>
         <View style={styles.header}>
-            <TouchableOpacity><Ionicons name="arrow-back" size={24} color="black" /></TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.goBack()}><Ionicons name="arrow-back" size={24} color="black" /></TouchableOpacity>
             <Text style={styles.title}>Profile</Text>
             <TouchableOpacity><Ionicons name="settings-outline" size={0} color="black" /></TouchableOpacity>
         </View>

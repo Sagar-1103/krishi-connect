@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const { width } = Dimensions.get('window');
 
-const ProfileEditScreen = () => {
+const ProfileEditScreen = ({navigation}) => {
     const [email, setEmail] = useState("sagar@gmail.com");
     const [password, setPassword] = useState("12345678");
     const [pincode, setPincode] = useState("403711");
@@ -26,7 +26,7 @@ const ProfileEditScreen = () => {
     return (
         <ScrollView style={{ flex: 1, backgroundColor: "rgb(239, 239, 239)", padding: 20, paddingTop: 30 }} nestedScrollEnabled={false}>
             <View style={styles.header}>
-                <TouchableOpacity><Ionicons name="arrow-back" size={24} color="black" /></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.goBack()}><Ionicons name="arrow-back" size={24} color="black" /></TouchableOpacity>
                 <Text style={styles.title}>Account Details</Text>
                 <TouchableOpacity><Ionicons name="settings-outline" size={24} color="black" /></TouchableOpacity>
             </View>

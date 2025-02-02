@@ -24,7 +24,7 @@ const purchasing = AsyncHandler(async(req,res)=>{
         throw new ApiError(400,"No order made");
     }
 
-    return res.status(201).json(new ApiResponse(200, items, "Order Created."));
+    return res.status(201).json(new ApiResponse(200, createdOrder, "Order Created."));
 })
 
 export {getItems,purchasing};

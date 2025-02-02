@@ -35,7 +35,7 @@ const SignInScreen = ({navigation}) => {
     try {
       const user = await auth().signInWithEmailAndPassword(tempEmail, tempPassword);
       const {displayName, email} = user.user;
-      const url = `${BACKEND_URL}/users/login`;
+      const url = `https://krishi-connect-user-service.vercel.app/users/login`;
       const response = await axios.post(
         url,
         {email},

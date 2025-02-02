@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 
@@ -28,11 +29,11 @@ const onboardingData = [
 const OnboardingScreen1 = ({ navigation }) => {
   const [step, setStep] = useState(0);
 
-  const handleNext = () => {
+  const handleNext = async() => {
     if (step < onboardingData.length - 1) {
       setStep(step + 1);
     } else {
-      // Sagar Navigate to login screen here
+      navigation.navigate("GetStarted")
     }
   };
 

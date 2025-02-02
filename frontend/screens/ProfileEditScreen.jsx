@@ -31,7 +31,11 @@ const ProfileEditScreen = () => {
                 <TouchableOpacity><Ionicons name="settings-outline" size={24} color="black" /></TouchableOpacity>
             </View>
 
-            <Image source={require('../assets/icon.png')} style={styles.profileImage} />
+            <Ionicons 
+                name="profile"
+                style={styles.profileImage}
+                color="black" 
+            />
 
             <View style={styles.separator} />
 

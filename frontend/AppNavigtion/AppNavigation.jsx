@@ -15,6 +15,8 @@ import SplashScreen from '../screens/SplashScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ListedItemScreen from '../screens/ListedItemScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
+import ProfileEditScreen from '../screens/ProfileEditScreen';
+import ChatListScreen from '../screens/ChatList';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,6 +74,8 @@ const AppNavigation = () => {
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ListedItemScreen" component={ListedItemScreen} />
       <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+      <Stack.Screen name="ProfileEditScreen" component={ProfileEditScreen} />
+      <Stack.Screen name="ChatListScreen" component={ChatListScreen} />
     </Stack.Navigator>
   );
 

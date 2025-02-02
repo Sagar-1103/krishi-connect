@@ -4,7 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Profile from "../screens/Profile";
 import SellScreen from "../screens/SellScreen";
 import AIChat from "../screens/AIChat";
-import Logout from "../tempScreens/LogoutScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import HomeScreen from "../screens/Home";
 
 const Tab = createBottomTabNavigator();
@@ -27,7 +27,7 @@ const tabData = [
   },
   {
     name: "Profile",
-    component: Logout,
+    component: ProfileScreen,
     iconName: "person",
   },
 ];

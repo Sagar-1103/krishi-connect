@@ -17,9 +17,9 @@ const postProduct = AsyncHandler(async(req,res)=>{
     }
     
     const uploadedImagee = await uploadOnCloudinary(imageLocalPath);
-    if(!uploadedImagee){
-        throw new ApiError(500,"Some error occured while uploading image to server");
-    }
+    // if(!uploadedImagee){
+    //     throw new ApiError(500,"Some error occured while uploading image to server");
+    // }
     
     const createdProduct = await Product.create({
         title,category,subCategory,image:{imageUrl:uploadedImagee?.url,imageId:uploadedImagee?.public_id,},description,price,pricingUnit,area,village,state,status,from,to,authorId,paymentType,lat,lon

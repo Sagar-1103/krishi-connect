@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { View, ScrollView, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
-import Geolocation from '@react-native-community/geolocation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const categories = ["All Items", "Machines", "Tools", "Irrigation", "Fertilizers", "Pesticides", "Livestock", "Storage", "Safety"];
@@ -50,8 +49,6 @@ const HomeScreen = () => {
 
   useEffect(()=>{
     fetchItems();
-  Geolocation.getCurrentPosition(info => console.log(info));
-    // setProducts(demoProducts);
   },[])
 
   const fetchItems = async()=>{
@@ -67,7 +64,7 @@ const HomeScreen = () => {
   }
 
   const handleChatRedirect = async()=>{
-    
+    navigation.navigate("ChatListScreen");
   }
 
   return (

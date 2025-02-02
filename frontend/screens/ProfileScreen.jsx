@@ -1,8 +1,36 @@
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native'
 import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useLogin } from '../context/LoginProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BACKEND_URL } from '@env';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
+    const {setUser,setAccessToken,setRefreshToken} = useLogin();
+    const navigation = useNavigation();
+    const handleLogout = async()=>{
+        try {
+            const url = `${BACKEND_URL}/users/logout`;
+            const response = await axios.post(url,{},
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                },
+              );
+            const res = await response.data;
+            const data = res.data;
+            console.log(data);
+            await AsyncStorage.clear();
+            setUser(null);
+            setAccessToken(null);
+            setRefreshToken(null);
+        } catch (error) {
+            console.log("Error : ",error);
+        }
+    }
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "rgb(239, 239, 239)", padding: 20, paddingTop: 30, paddingHorizontal: 30 }} nestedScrollEnabled={false}>
         <View style={styles.header}>
@@ -14,16 +42,16 @@ const ProfileScreen = () => {
         <View style={styles.headerContainer}>
             <TouchableOpacity><Ionicons name="person" size={30} color="black" /></TouchableOpacity>
             <Text style={styles.subTitle}>Account Details</Text>
-            <TouchableOpacity><Ionicons name="arrow-forward" size={24} color="black" /></TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate("ProfileEditScreen")}><Ionicons name="arrow-forward" size={24} color="black" /></TouchableOpacity>
         </View>
 
         <View style={styles.headerContainer}>
             <TouchableOpacity><Ionicons name="language" size={30} color="black" /></TouchableOpacity>
             <Text style={styles.subTitle}>Language Settings</Text>
-            <TouchableOpacity><Ionicons name="arrow-forward" size={24} color="black" /></TouchableOpacity>
+            <TouchableOpacity ><Ionicons name="arrow-forward" size={24} color="black" /></TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.saveButton}>
+        <TouchableOpacity onPress={handleLogout} style={styles.saveButton}>
             <Text style={styles.saveButtonText}>Log Out</Text>
         </TouchableOpacity>
 
@@ -64,9 +92,9 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: 'green',
         marginHorizontal: '5%',
-        marginTop: '107%',
+        marginTop: '90%',
         borderRadius: 12,
-        // bottom:'100%'
+        
     },
     saveButtonText: {
         fontSize: 18,

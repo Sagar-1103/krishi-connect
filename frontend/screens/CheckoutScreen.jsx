@@ -5,6 +5,7 @@ import { Calendar } from "react-native-calendars";
 import { useLogin } from '../context/LoginProvider';
 import axios from 'axios';
 import RazorpayCheckout from "react-native-razorpay";
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -16,6 +17,8 @@ const CheckoutScreen = () => {
   const {tempProduct,user} = useLogin();
   const [totalDays,setTotalDays] = useState(0);
   const [tempTotalPrice,setTempTotalPrice] = useState(0);
+
+  const navigation = useNavigation();
   
   const [listings, setListings] = useState([]);
 
@@ -50,17 +53,19 @@ const CheckoutScreen = () => {
       });
 
       const res = await response.data;
-      const amount = totalPrice;
+      const amount = tempTotalPrice;
       if (!amount || isNaN(amount) || amount < 1) {
         Alert.alert("Invalid Amount", "Please enter a valid amount.");
         return;
       }
-
-      const { data } = await axios.post("https://krishi-connect-payment-service.vercel.app/pay/create-order", {amount});
+      console.log(tempTotalPrice);
+      
+      const { data } = await axios.post("https://0026-152-58-237-132.ngrok-free.app/pay/create-order", {amount:tempTotalPrice,buyerId:user._id});
+      
 
     const options = {
-      key: "rzp_test_uAH0DM2C8YpfxW",
-      amount: data.data.amount,
+      key: "rzp_test_OkdluyPOL24cvN",
+      amount: tempTotalPrice*100,
       currency: "INR",
       name: "Krishi Connect",
       description: "Purchase Description",
@@ -75,17 +80,17 @@ const CheckoutScreen = () => {
 
     RazorpayCheckout.open(options)
       .then(async (response) => {
-        const verifyRes = await axios.post("https://krishi-connect-payment-service.vercel.app/pay/verify-payment", response);
+        const verifyRes = await axios.post("https://0026-152-58-237-132.ngrok-free.app/pay/verify-payment", response);
         Alert.alert("Payment Success", verifyRes.data.message);
       })
       .catch((error) => {
-        Alert.alert("Payment Failed", error.description || "Something went wrong!");
+        navigation.navigate("TabNavigation");
       });
       
       
     } catch (error) {
-      console.log("Error : ",error);
-      
+      // console.log("Error : ",error);
+      navigation.navigate("TabNavigation");
     }
   }
 

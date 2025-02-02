@@ -35,7 +35,7 @@ const creatingOrder = AsyncHandler(async (req, res) => {
     throw new ApiError(500, "Something went wrong while creating the order.");
 
   }
-  return res.status(201).json(new ApiResponse(201, order, "Order created successfully"));
+  return res.status(201).json(new ApiResponse(201, createdOrder, "Order created successfully"));
 });
 
 const verifyingPayment = AsyncHandler(async (req, res) => {

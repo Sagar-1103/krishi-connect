@@ -57,8 +57,8 @@ const ProductDetailsScreen = ({ navigation }) => {
     formData.append('area', area);
     formData.append('village', village);
     formData.append('state', state);
-    formData.append('lon', longi);
-    formData.append('lat', lati);
+    formData.append('lon', 15);
+    formData.append('lat', 15);
     formData.append('status', "listed");
     formData.append('from', startDate);
     formData.append('to', endDate);
@@ -67,7 +67,7 @@ const ProductDetailsScreen = ({ navigation }) => {
     formData.append('paymentType', paymentType);
     formData.append('image',uploadingImage);
 
-      const url = `https://krishi-connect-product-service-nine.vercel.app/products/post`;
+      const url = `https://56c6-106-206-2-34.ngrok-free.app/products/post`;
       const response = await axios.post(
         url,
         formData,

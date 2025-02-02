@@ -111,7 +111,7 @@ const HomeScreen = () => {
           ))}
         </View>}
         {
-          products.filter((p)=>p.category===selectedCategory).map((product,index) => (
+          products.filter((p)=>p.category===selectedCategory.split(" ")[0]).map((product,index) => (
             <View key={index} style={styles.productCard}>
               <TouchableOpacity onPress={() => navigation.navigate("BuyProductDetails", { product })}>
               <Image  source={{ uri: product.image.imageUrl }} style={styles.productImage} />

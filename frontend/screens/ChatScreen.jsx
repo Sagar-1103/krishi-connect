@@ -38,7 +38,7 @@ const ChatScreen = ({route}) => {
   
     const userId = user?._id;
     const friendId = product?.authorId;
-    const productId = product?._id;
+    const productId = "user1";
   
     console.log(userId,friendId,productId);
 

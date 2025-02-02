@@ -46,7 +46,7 @@ const SignUpScreen = ({navigation}) => {
       const user = userCredential.user;
       console.log(user);
 
-      const url = `${BACKEND_URL}/users/signup`;
+      const url = `https://krishi-connect-user-service.vercel.app/users/signup`;
       const response = await axios.post(
         url,
         {email: user?.email, name: user?.email.split('@')[0]},

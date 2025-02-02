@@ -1,14 +1,19 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from "react-native";
 
 const FullScreenImageScreen = ({ navigation }) => {
+  const handleCLick = async()=>{
+    navigation.navigate("TabNavigation");
+    await AsyncStorage.setItem('random','true');
+  }
   return (
     <ImageBackground source={require("../assets/background.jpg")} style={styles.background}>
       <View style={styles.overlay}>
         <Image source={require("../assets/krishiConnectLogo.png")} style={styles.logo} />
         <Text style={styles.boldtext}>Buy|Rent|Share</Text>
         <Text style={styles.text}>One stop solution for all your farming tools.</Text>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("NextScreen")}> 
+        <TouchableOpacity style={styles.button} onPress={handleCLick}> 
           <Text style={styles.buttonText}>Let's Get Started</Text>
         </TouchableOpacity>
       </View>

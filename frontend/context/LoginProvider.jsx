@@ -9,9 +9,10 @@ const LoginProvider = props => {
   const [uploadingImage,setUploadingImage] = useState(null);
 
   const [tempProduct,setTempProduct] = useState([]);
+  const [random,setRandom] = useState(null);
   return (
     <LoginContext.Provider
-      value={{user,setUser,refreshToken,setRefreshToken,accessToken,setAccessToken,uploadingImage,setUploadingImage,tempProduct,setTempProduct}}>
+      value={{user,setUser,random,setRandom,refreshToken,setRefreshToken,accessToken,setAccessToken,uploadingImage,setUploadingImage,tempProduct,setTempProduct}}>
       {props.children}
     </LoginContext.Provider>
   );

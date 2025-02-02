@@ -17,12 +17,14 @@ import ListedItemScreen from '../screens/ListedItemScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
 import ProfileEditScreen from '../screens/ProfileEditScreen';
 import ChatListScreen from '../screens/ChatList';
+import OnboardingScreen1 from "../screens/OnboardingScreen1";
+import FullScreenImageScreen from '../screens/GetStarted';
 
 const Stack = createNativeStackNavigator();
 
 
 const AppNavigation = () => {
-  const {user,setAccessToken,setUser,setRefreshToken} = useLogin();
+  const {user,setAccessToken,random,setRandom,setUser,setRefreshToken} = useLogin();
   const [loading,setLoading] = useState(true);
 
   GoogleSignin.configure({
@@ -41,9 +43,11 @@ const AppNavigation = () => {
       const tempUser = await AsyncStorage.getItem('user');
       const tempRefreshToken = await AsyncStorage.getItem('refreshToken');
       const tempAccessToken = await AsyncStorage.getItem('accessToken');
+      const tempRandom = await AsyncStorage.getItem('random');
       setUser(JSON.parse(tempUser));
       setAccessToken(tempAccessToken);
       setRefreshToken(tempRefreshToken);
+      setRandom(tempRandom);
       } catch (error) {
         console.log("Error : ",error);
       }
@@ -66,8 +70,15 @@ const AppNavigation = () => {
   );
   }
 
+  if(!random){
+  <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="OnboardingScreen1" >
+        <Stack.Screen name="OnboardingScreen1" component={OnboardingScreen1} />
+        <Stack.Screen name="GetStarted" component={FullScreenImageScreen} />
+  </Stack.Navigator>
+  }
+
   return (
-    <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="TabNavigation" >
+    <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="OnboardingScreen1" >
       <Stack.Screen name="TabNavigation" component={TabNavigation} />
       <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
       <Stack.Screen name="BuyProductDetails" component={BuyProductDetails} />

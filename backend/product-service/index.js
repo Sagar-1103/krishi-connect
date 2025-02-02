@@ -14,13 +14,14 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
+connectCloudinary();
+
 connectDB()
   .then(() => {
     app.on("error", (error) => {
       console.log("ERR: ", error);
       throw error;
     });
-    connectCloudinary();
     app.listen(PORT, () => {
       console.log(`Product-Service running on port ${PORT}`);
     });

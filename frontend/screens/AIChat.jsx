@@ -20,7 +20,7 @@ const AIChat = ({ navigation }) => {
     const fetchChats = async () => {
         try {
             setLoading(true);
-            const url = `${BACKEND_URL}/ai-chat/farmer/${user?._id}`;
+            const url = `https://krishi-connect-ai-chat-service.vercel.app/farmer/${user?._id}`;
             console.log(url);
             
             const res = await axios.get(url, {
@@ -51,7 +51,7 @@ const AIChat = ({ navigation }) => {
         setNewMessage('');
 
         try {
-            const url = `${BACKEND_URL}/ai-chat/farmer`;
+            const url = `https://krishi-connect-ai-chat-service.vercel.app/farmer`;
             const res = await axios.post(url, { userId: user?._id, query: newMessage }, {
                 headers: { 'Content-Type': 'application/json' },
             });

@@ -12,7 +12,7 @@ const ProfileScreen = () => {
     const navigation = useNavigation();
     const handleLogout = async()=>{
         try {
-            const url = `${BACKEND_URL}/users/logout`;
+            const url = `https://krishi-connect-user-service.vercel.app/users/logout`;
             const response = await axios.post(url,{},
                 {
                   headers: {

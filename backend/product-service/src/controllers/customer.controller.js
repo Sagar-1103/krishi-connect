@@ -12,7 +12,7 @@ const getItems = AsyncHandler(async(req,res)=>{
 const purchasing = AsyncHandler(async(req,res)=>{
     const {startDate,endDate,numDays,totalPrice,buyerId,productId} = req.body;
 
-    if(!startDate || !endDate || !numDays || !totalPrice,buyerId || !productId){
+    if(!startDate || !endDate || !numDays || !totalPrice ||!buyerId || !productId){
         throw new ApiError(400,"Please provide all the details.");
     }
 

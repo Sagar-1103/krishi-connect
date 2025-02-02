@@ -15,7 +15,7 @@ const uploadOnCloudinary = async (localFilePath) => {
     return response;
   } catch (error) {
     fs.unlinkSync(localFilePath) 
-    // return null
+    return null
   }
 };
 
@@ -25,7 +25,7 @@ const deleteFromCloudinary = async (publicId) => {
     console.log("Image deleted successfully:", result);
     return result;
   } catch (error) {
-    // return null
+    return null
   }
 };
 

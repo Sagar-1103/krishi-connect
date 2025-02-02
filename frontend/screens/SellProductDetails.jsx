@@ -10,9 +10,7 @@ import axios from "axios";
 import { BACKEND_URL } from '@env';
 import { useNavigation } from "@react-navigation/native";
 import Geolocation from '@react-native-community/geolocation';
-import NetInfo from '@react-native-community/netinfo';
-import BackgroundService from 'react-native-background-actions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 
@@ -47,8 +45,6 @@ const ProductDetailsScreen = ({ navigation }) => {
       return;
     }
     try {
-
-      const isConnected = (await NetInfo.fetch()).isConnected;
       
       const formData = new FormData();
       
@@ -71,11 +67,6 @@ const ProductDetailsScreen = ({ navigation }) => {
     formData.append('paymentType', paymentType);
     formData.append('image',uploadingImage);
 
-    if (!isConnected) {
-      await AsyncStorage.setItem('pendingPost', JSON.stringify(formData));
-      Alert.alert("Offline Mode", "Data saved locally. It will be uploaded once you're online.");
-    }
-    else {
       const url = `https://krishi-connect-product-service-nine.vercel.app/products/post`;
       const response = await axios.post(
         url,
@@ -101,58 +92,10 @@ const ProductDetailsScreen = ({ navigation }) => {
         setModalVisible(false);
         navigation.navigate("Home");
       }, 5000);
-    }
-  
     } catch (error) {
       console.log("Error : ",error);
     }
   }
-
-  const syncOfflineData = async () => {
-    const isConnected = (await NetInfo.fetch()).isConnected;
-    if (!isConnected) return;
-
-    const pendingData = await AsyncStorage.getItem('pendingPost');
-    if (pendingData) {
-      try {
-        const parsedData = JSON.parse(pendingData);
-        await axios.post("https://krishi-connect-product-service-nine.vercel.app/products/post", parsedData);
-        await AsyncStorage.removeItem('pendingPost');
-        console.log("Data synced successfully!");
-      } catch (error) {
-        console.log("Sync failed:", error);
-      }
-    }
-  };
-
-  const backgroundTask = async () => {
-    await new Promise(async (resolve) => {
-      const interval = setInterval(async () => {
-        await syncOfflineData();
-      }, 60000);
-
-      BackgroundService.on('stop', () => {
-        clearInterval(interval);
-        resolve();
-      });
-    });
-  };
-
-  const startBackgroundSync = async () => {
-    await BackgroundService.start(backgroundTask, {
-      taskName: 'SyncOfflineData',
-      taskTitle: 'Syncing offline data',
-      taskDesc: 'Uploading stored data when online',
-      taskIcon: { name: 'ic_launcher', type: 'mipmap' },
-      linkingURI: 'yourapp://sync',
-      parameters: {},
-    });
-  };
-
-  useEffect(() => {
-    startBackgroundSync();
-  }, []);
-
 
   const categories = [
     { key: '1', value: 'Machines' },
